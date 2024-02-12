@@ -12,7 +12,6 @@
 
 	<div th:if="${session.user}">
 		<a th:href="@{/logout}">Logout</a>
-		<!-- Add any other content you want to display for logged-in users -->
 	</div>
 
 	<h2>User Management</h2>
@@ -87,7 +86,7 @@
 				<td>
 					<img alt="Image" class="profile-image-admin" th:if="${user.profilePicture != null}"
 						th:src="'data:image/png;base64, ' + ${user.profilePicture}" />
-					<img alt="Default Image" class="profile-image" src="/img/default-picture.png"
+					<img alt="Default Image" class="profile-image-admin" src="/img/default-picture.png"
 						th:unless="${user.profilePicture != null}" />
 				</td>
 				<td th:text="${user.email}"></td>
