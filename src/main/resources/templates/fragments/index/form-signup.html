@@ -1,0 +1,26 @@
+<form enctype="multipart/form-data" th:action="@{/signup}" th:method="post">
+
+    <label for="profilePicture">
+        <img alt="Default Image" class="image-signup" id="imagePreview" src="/img/default-picture.png"><br>
+        <input accept="image/*" id="profilePicture" name="profilePicture" onchange="previewImage(this)" style="display: none;"
+               type="file">
+    </label><br>
+
+    <label for="firstName">First Name:</label>
+    <input id="firstName" maxlength="24" name="firstName" type="text"><br>
+
+    <label for="lastName">Last Name:</label>
+    <input id="lastName" maxlength="25" name="lastName" type="text"><br>
+
+    <label for="signup-email">*Email:</label>
+    <input id="signup-email" maxlength="255" name="email" required type="text"><br>
+
+    <label for="signup-password">*Password:</label>
+    <input id="signup-password" maxlength="255" name="password" required type="password"><br>
+
+    <label for="phoneNumber">Phone Number:</label>
+    <input id="phoneNumber" maxlength="15" name="phoneNumber" type="text"><br>
+
+    <button type="submit">Sign Up</button>
+</form>
+

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete Account Confirmation</title>
+</head>
+<body>
+    <h2>Delete Account Confirmation</h2>
+    <p>Are you sure you want to delete your account?</p>
+    
+    <form th:action="@{/profile/delete}" method="post">
+        <button type="submit">Yes, delete my account</button>
+        <a th:href="@{/profile}" >Cancel</a>
+    </form>
+</body>
+</html>

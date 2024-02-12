@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Write</title>
+    <script src="/js/main.js"></script>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<form enctype="multipart/form-data" id="writeForm" method="post" th:action="@{/write/create}">
+
+    <label for="image">
+        <input accept="image/*" id="image" name="image" onchange="previewImage(this)" style="display: none;"
+               type="file"/>
+        <img alt="Default Image" class="image-preview" id="imagePreview" src="/img/no-image.png">
+    </label><br>
+
+    <label for="title">Title:</label>
+    <input id="title" name="title" required type="text" maxlength="250">
+
+    <label for="subtitle">Subtitle:</label>
+    <input id="subtitle" name="subtitle" required type="text" maxlength="250">
+
+    <label for="content">Content:</label>
+    <textarea id="content" name="content" required></textarea><br>
+
+    <button type="submit">Create Article</button>
+</form>
+
+</body>
+</html>

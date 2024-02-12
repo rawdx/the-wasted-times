@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8"/>
+    <title th:text="${article.title}"></title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<div id="entry">
+    <div class="main typography use-theme-bg" id="main">
+        <div th:replace="~{fragments/header :: div}"></div>
+        <div>
+            <div class="single-post-container">
+                <div class="container">
+                    <div class="single-post">
+                        <article class="typography newsletter-post post">
+                            <div class="post-header">
+                                <h1 class="post-title unpublished" th:text="${article.title}"></h1>
+                                <h3 class="subtitle" th:text="${article.subtitle}"></h3>
+                            </div>
+                            <div class="available-content">
+                                <div class="body markup" dir="auto">
+                                    <div class="captioned-image-container">
+                                        <div class="image2-inset">
+                                            <img alt
+                                                 class="sizing-normal" height="768" th:if="${article.image != null}"
+                                                 th:src="'data:image/png;base64, ' + ${article.image}" width="1024">
+                                        </div>
+                                    </div>
+                                    <div class="content-container" th:text="${article.content}"></div>
+                                </div>
+                            </div>
+                            <div class="pc-display-flex pc-flexDirection-column pc-paddingBottom-16 pc-reset">
+                                <div class="pc-display-flex pc-flexDirection-column pc-paddingTop-16 pc-paddingBottom-16 pc-reset">
+                                    <div class="pc-display-flex pc-gap-12 pc-alignItems-center pc-reset byline-wrapper">
+
+                                        <div class="pc-display-flex pc-reset">
+                                            <div class="pc-display-flex pc-gap-8 pc-alignItems-center frontend-pencraft-Box-module__flexGrow--mx4xz pc-reset facepile">
+                                                <div class="pc-display-flex pc-alignItems-center pc-reset">
+                                                    <div class="pc-display-flex pc-alignItems-center pc-reset frontend-components-Facepile-module__faces--FVkdk frontend-components-Facepile-module__size-40--pH6IT">
+                                                        <div class="profile-hover-card-target frontend-reader2-ProfileAndPublicationHoverCard-module__profileHoverCardTarget--Od_YL">
+                                                            <p class="pc-display-flex frontend-pencraft-Box-module__flexAuto--CnX9I pc-reset">
+                                                                <picture>
+                                                                    <img alt="Default Image"
+                                                                         class="article-user-image"
+                                                                         src="/img/default-picture.png"
+                                                                         th:unless="${article.user.profilePicture != null}"/>
+                                                                    <img alt
+                                                                         class="article-user-image"
+                                                                         th:if="${article.user.profilePicture != null}"
+                                                                         th:src="'data:image/png;base64, ' + ${article.user.profilePicture}"/>
+                                                                </picture>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="pc-display-flex pc-flexDirection-column pc-reset">
+                                            <div
+                                                    class="pc-reset frontend-pencraft-Text-module__color-pub-primary-text--RzL7j frontend-pencraft-Text-module__line-height-20--p0dP8 frontend-pencraft-Text-module__font-meta--U_nxy frontend-pencraft-Text-module__size-11--k1e8b frontend-pencraft-Text-module__weight-medium--x7khA frontend-pencraft-Text-module__transform-uppercase--IDkUL frontend-pencraft-Text-module__reset--dW0zZ frontend-pencraft-Text-module__meta--jzHdd">
+                                                <div
+                                                        class="profile-hover-card-target frontend-reader2-ProfileAndPublicationHoverCard-module__profileHoverCardTarget--Od_YL">
+                                                    <p class="writer-name pc-reset frontend-pencraft-Text-module__decoration-hover-underline--BEYAn frontend-pencraft-Text-module__reset--dW0zZ"
+                                                       th:text="${article.user.name}">
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="pc-display-flex pc-gap-4 pc-reset">
+                                                <div class="pc-reset frontend-pencraft-Text-module__color-pub-secondary-text--OzRTa frontend-pencraft-Text-module__line-height-20--p0dP8 frontend-pencraft-Text-module__font-meta--U_nxy frontend-pencraft-Text-module__size-11--k1e8b frontend-pencraft-Text-module__weight-medium--x7khA frontend-pencraft-Text-module__transform-uppercase--IDkUL frontend-pencraft-Text-module__reset--dW0zZ frontend-pencraft-Text-module__meta--jzHdd"
+                                                     th:text="${#temporals.format(article.publicationDate, 'dd MMM yyyy')}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="pc-display-flex pc-gap-16 pc-justifyContent-space-between pc-alignItems-center frontend-pencraft-Box-module__flexGrow--mx4xz pc-reset frontend-pencraft-Box-module__border-bottom-detail-themed--eVwFY post-ufi">
+
+                                </div>
+                            </div>
+                            <div class="post-footer use-separators post-ufi themed next-prev">
+                                <div><a class="post-ufi-button style-button has-label with-border"
+                                        role="button">
+                                    <svg class="icon"
+                                         fill="#000000" height="20" role="img"
+                                         stroke="#000" stroke-width="1.5" style="height: 20px; width: 20px;" viewBox="0 0 24 24"
+                                         width="20" xmlns="http://www.w3.org/2000/svg">
+                                        <g>
+                                            <title></title>
+                                            <svg class="lucide lucide-arrow-left " height="24"
+                                                 stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                                 viewBox="0 0 24 24" width="24"
+                                                 xmlns="http://www.w3.org/2000/svg">
+                                                <path d="m12 19-7-7 7-7"></path>
+                                                <path d="M19 12H5"></path>
+                                            </svg>
+                                        </g>
+                                    </svg>
+                                    <div class="label">
+                                        <div class="tw-flex tw-items-center">Previous</div>
+                                    </div>
+                                </a></div>
+                                <div><a class="post-ufi-button style-button has-label with-border" role="button">
+                                    <div class="label">
+                                        <div class="tw-flex tw-items-center">Next</div>
+                                    </div>
+                                    <svg class="icon" fill="#000000" height="20"
+                                         role="img" stroke="#000" stroke-width="1.5" style="height: 20px; width: 20px;"
+                                         viewBox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg">
+                                        <g>
+                                            <title></title>
+                                            <svg class="lucide lucide-arrow-right " height="24"
+                                                 stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                                 viewBox="0 0 24 24" width="24"
+                                                 xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M5 12h14"></path>
+                                                <path d="m12 5 7 7-7 7"></path>
+                                            </svg>
+                                        </g>
+                                    </svg>
+                                </a></div>
+                            </div>
+                    </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/footer :: div}"></div>
+</div>
+</div>
+
+</body>
+
+</html>

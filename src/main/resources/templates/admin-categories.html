@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Manage categories</title>
+	<link rel="stylesheet" th:href="@{/css/style.css}">
+	<script th:src="@{/js/main.js}"></script>
+</head>
+
+<body>
+
+	<div th:if="${session.user}">
+		<a th:href="@{/logout}">Logout</a>
+	</div>
+
+	<h2>Article Management</h2>
+	<a th:href="@{/admin/users}">show users</a>
+	<a th:href="@{/admin/articles}">show articles</a>
+
+	<button id="showCreateForm" onclick="toggleForm('createForm')">Create Category</button>
+
+	<form id="createForm" th:action="@{/admin/categories/create}" th:method="post" th:style="${'display: none;'}">
+		<h3>Create Category</h3>
+		<label>Name:
+			<input name="name" required type="text" />
+		</label>
+
+		<label>Url:
+			<input name="url" required type="text">
+		</label>
+
+		<button type="submit">Create</button>
+	</form>
+
+	<table>
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>Name</th>
+				<th>Url</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="category : ${categories}">
+				<td th:text="${category.id}"></td>
+				<td th:text="${category.name}"></td>
+				<td th:text="${category.url}"></td>
+				<td>
+					<form th:action="@{/admin/categories/update}" th:id="'updateForm-' + ${category.id}"
+						th:method="post" th:style="${'display: none;'}">
+						<input name="id" th:value="${category.id}" type="hidden" />
+
+						<input name="name" th:value="${category.name}" type="text" />
+
+						<input name="url" th:value="${category.url}" type="text" />
+
+						<button type="submit">Update</button>
+					</form>
+
+					<button th:onclick="'toggleForm(\'updateForm-' + ${category.id} + '\');'">Edit</button>
+
+					<form th:action="@{/admin/categories/delete}" th:method="post">
+						<input name="id" th:value="${category.id}" type="hidden" />
+						<button type="submit">Delete</button>
+					</form>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+
+	<script>
+		function toggleContent(contentId) {
+			let contentDiv = document.getElementById(contentId);
+			if (contentDiv.style.display === 'none') {
+				contentDiv.style.display = 'block';
+			} else {
+				contentDiv.style.display = 'none';
+			}
+		}
+	</script>
+
+</body>
+
+</html>

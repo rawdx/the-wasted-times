@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Manage articles</title>
+	<link rel="stylesheet" th:href="@{/css/style.css}">
+	<script th:src="@{/js/main.js}"></script>
+</head>
+
+<body>
+
+	<div th:if="${session.user}">
+		<a th:href="@{/logout}">Logout</a>
+	</div>
+
+	<h2>Article Management</h2>
+	<a th:href="@{/admin/users}">show users</a>
+	<a th:href="@{/admin/categories}">show Categories</a>
+
+	<table>
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>Title</th>
+				<th>Writer</th>
+				<th>Status</th>
+				<th>Priority</th>
+				<th>Category</th>
+				<th>Creation Date</th>
+				<th>Publication Date</th>
+				<th>Actions</th>
+				<th>Content</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="article : ${articles}">
+				<td th:text="${article.id}"></td>
+				<td class="article-title" th:text="${article.title}"></td>
+				<td th:text="${article.user.email}"></td>
+				<td th:text="${article.status}"></td>
+				<td th:text="${article.priority}"></td>
+				<td th:text="${article.category != null ? article.category.name : ''}"></td>
+				<td th:text="${#temporals.format(article.creationDate, 'yyyy-MM-dd HH:mm')}"></td>
+				<td th:text="${#temporals.format(article.publicationDate, 'yyyy-MM-dd HH:mm')}"></td>
+				<td>
+					<form th:action="@{/admin/articles/update}" th:id="'updateForm-' + ${article.id}" th:method="post"
+						th:style="${'display: none;'}">
+						<input name="id" th:value="${article.id}" type="hidden" />
+
+						<label>
+							<select name="status">
+								<option th:selected="${#strings.equals(article.status, 'PENDING')}" value="PENDING">
+									Pending
+								</option>
+								<option th:selected="${#strings.equals(article.status, 'PUBLISHED')}" value="PUBLISHED">
+									Published
+								</option>
+								<option th:selected="${#strings.equals(article.status, 'DECLINED')}" value="DECLINED">
+									Declined
+								</option>
+							</select>
+						</label>
+
+						<label>
+							<select name="priority">
+								<option th:selected="${#strings.equals(article.priority, 'REGULAR')}" value="REGULAR">
+									Regular
+								</option>
+								<option th:selected="${#strings.equals(article.priority, 'FEATURED')}" value="FEATURED">
+									Featured
+								</option>
+								<option th:selected="${#strings.equals(article.priority, 'HIGHLIGHTED')}"
+									value="HIGHLIGHTED">
+									Highlighted
+								</option>
+							</select>
+						</label>
+
+						<label>
+							<select name="categoryId">
+								<option th:selected="${article.category == null}" th:value=0>No Category</option>
+								<option th:selected="${article.category != null and category.id eq article.category.id}"
+									th:each="category : ${categories}" th:value="${category.id}"
+									th:text="${category.name}">
+									Category Name
+								</option>
+							</select>
+						</label>
+
+						<button type="submit">Update</button>
+					</form>
+
+					<button th:onclick="'toggleForm(\'updateForm-' + ${article.id} + '\');'">Edit</button>
+
+					<button th:onclick="'toggleContent(\'content-' + ${article.id} + '\');'">Show Content</button>
+
+					<form th:action="@{/admin/articles/delete}" th:method="post">
+						<input name="id" th:value="${article.id}" type="hidden" />
+						<button type="submit">Delete</button>
+					</form>
+				</td>
+				<td>
+					<!-- Article content (initially hidden) -->
+					<div th:id="'content-' + ${article.id}"
+						th:style="'display: none; max-width: 500px; overflow: auto; white-space: pre-line;'">
+						<img alt="Image" class="image" th:if="${article.image != null}"
+							th:src="'data:image/png;base64, ' + ${article.image}" width="300px" />
+						<!--                <img alt="Default Image" class="profile-image" src="/img/default-picture.png"-->
+						<!--                     th:unless="${session.user.profilePicture != null}"/>-->
+						<h3 th:text="${article.title}"></h3>
+						<h4 th:text="${article.subtitle}"></h4>
+						<p th:utext="${article.content}"></p>
+					</div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+
+	<!-- Pagination controls -->
+	<div th:if="${totalPages > 1}">
+		<ul class="pagination">
+			<li th:class="${currentPage == 1 ? 'disabled' : ''}">
+				<a aria-label="First" th:href="@{/admin/articles(page=1)}">
+					<span aria-hidden="true">&laquo;&laquo;</span>
+				</a>
+			</li>
+			<li th:each="pageNumber : ${#numbers.sequence(currentPage - 1, currentPage + 1)}"
+				th:if="${pageNumber >= 1 and pageNumber <= totalPages}">
+				<span th:if="${pageNumber == currentPage}" th:text="${pageNumber}"></span>
+				<a th:href="@{/admin/articles(page=${pageNumber})}" th:text="${pageNumber}"
+					th:unless="${pageNumber == currentPage}"></a>
+			</li>
+			<li th:class="${currentPage == totalPages ? 'disabled' : ''}">
+				<a aria-label="Last" th:href="@{/admin/articles(page=${totalPages})}">
+					<span aria-hidden="true">&raquo;&raquo;</span>
+				</a>
+			</li>
+		</ul>
+	</div>
+
+	<script>
+		function toggleContent(contentId) {
+			let contentDiv = document.getElementById(contentId);
+			if (contentDiv.style.display === 'none') {
+				contentDiv.style.display = 'block';
+			} else {
+				contentDiv.style.display = 'none';
+			}
+		}
+	</script>
+
+</body>
+
+</html>

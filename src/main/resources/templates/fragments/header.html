@@ -1,0 +1,88 @@
+<div class="main-menu animated with-nav">
+    <div class="main-menu-content">
+        <div class="topbar">
+            <div class="topbar-content">
+                <th:block>
+                    <div class="navbar-logo-container">
+                    </div>
+                </th:block>
+                <h1 class="navbar-title loading"><a class="navbar-title-link" href="/static">The Wasted Times</a>
+                </h1>
+                <div class="navbar-buttons">
+                    <div class="frontend-components-PubTheme-module__pubTheme--Vew50">
+                        <!--						<button class="button primary sign-in-link subscribe-cta subscribe-btn"-->
+                        <!--							th:onclick="|location.href='subscribe'|"-->
+                        <!--							th:unless="${session.user != null and !(#strings.equals(session.user.role, 'USER'))}"-->
+                        <!--							type="button">-->
+                        <!--							Subscribe-->
+                        <!--						</button>-->
+                        <button class="button primary sign-in-link subscribe-cta subscribe-btn"
+                                onclick="toggleSignupPopup()"
+                                th:unless="${session.user != null and !(#strings.equals(session.user.role, 'USER'))}"
+                                type="button">
+                            Subscribe
+                        </button>
+                        <button class="button login-button sign-in-link outline-grayscale" onclick="toggleLoginPopup()"
+                                th:if="${session.user == null}" type="button">Login
+                        </button>
+                        <div class="navbar-logo-container">
+                            <a th:href="@{/profile}" th:if="${session.user != null}">
+                                <img alt="Image" class="image-navbar"
+                                     th:if="${session.user != null && session.user.profilePicture != null}"
+                                     th:src="'data:image/png;base64, ' + ${session.user.profilePicture}"/>
+                                <img alt="Default Image" class="image-navbar" src="/img/default-picture.png"
+                                     th:if="${session.user != null && session.user.profilePicture == null}"/>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div id="login-popup" style="display: none;">
+                <div th:replace="~{fragments/index/form-login :: form}"></div>
+            </div>
+
+            <div id="signup-popup" style="display: none;">
+                <div th:replace="~{fragments/index/form-signup :: form}"></div>
+            </div>
+
+            <div class="overflow-list-container sections-overflow">
+                <div class="section-bar scroll">
+                    <div class="overflow-items">
+                        <div th:class="'menu-item ' + ${currentUrl == '/' ? 'selected' : ''}">
+                            <a href="/" role="button" tabIndex="0">
+                                <span class="overflow-item-text">Home</span>
+                            </a>
+                        </div>
+                        <div th:class="'menu-item ' + (${currentUrl == category.url ? 'selected' : ''})"
+                             th:each="category : ${categories}">
+                            <a role="button" tabIndex="0"
+                               th:href="@{/category/{categoryUrl}(categoryUrl=${category.url})}">
+                                <span class="overflow-item-text" th:text="${category.name}"></span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="left-button">
+                        <div class="scroll-button-hitbox" role="button">
+                            <svg class="lucide lucide-chevron-left " fill="none" height="24" stroke="currentColor"
+                                 stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24"
+                                 width="24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="m15 18-6-6 6-6"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="right-button">
+                        <div class="scroll-button-hitbox" role="button">
+                            <svg class="lucide lucide-chevron-right " fill="none" height="24" stroke="currentColor"
+                                 stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24"
+                                 width="24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="m9 18 6-6-6-6"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title th:text="'User Profile - ' + ${session.user.email}">User Profile</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+	<div th:if="${session.user}">
+		<a th:href="@{/logout}">Logout</a>
+	</div>
+
+<h2>User Profile</h2>
+
+<table>
+    <tr>
+        <td>
+            <img alt="Image"
+                 class="profile-image" th:if="${session.user.profilePicture != null}" th:src="'data:image/png;base64, ' + ${session.user.profilePicture}"/>
+            <img alt="Default Image" class="profile-image" src="/img/default-picture.png"
+                 th:unless="${session.user.profilePicture != null}"/>
+        </td>
+    </tr>
+    <tr>
+        <td>Email:</td>
+        <td th:text="${session.user.email}"></td>
+    </tr>
+    <tr>
+        <td>Name:</td>
+        <td th:text="${session.user.name}"></td>
+    </tr>
+    <tr>
+        <td>Phone:</td>
+        <td th:text="${session.user.phoneNumber}"></td>
+    </tr>
+    <tr>
+        <td>User Role:</td>
+        <td th:text="${session.user.role}"></td>
+    </tr>
+</table>
+
+<th:block th:if="${!(#strings.equals(session.user.role, 'ADMIN') or session.user.isVerified == true)}">
+    <form th:action="@{/resend-verification}" th:method="get">
+        <input th:name="email" th:value="${session.user.email}" type="hidden"/>
+        <button type="submit">Resend Verification Email</button>
+    </form>
+</th:block>
+
+<th:block th:unless="${#strings.equals(session.user.role, 'ADMIN')}">
+    <form th:action="@{/initiate-password-change}" th:method="get">
+        <input th:name="email" th:value="${session.user.email}" type="hidden"/>
+
+        <button type="submit">Change Password</button>
+    </form>
+</th:block>
+
+
+<th:block th:unless="${#strings.equals(session.user.role, 'ADMIN')}">
+    <form method="post" th:action="@{/profile/edit/email}">
+        <label for="email">Email:</label>
+        <input id="email" name="email" type="text"><br>
+
+        <button type="submit">Update Email</button>
+    </form>
+</th:block>
+
+<th:block th:unless="${#strings.equals(session.user.role, 'ADMIN') or #strings.equals(session.user.role, 'WRITER')}">
+    <form method="post" th:action="@{/profile/edit/name}">
+        <label for="firstName">First Name:</label>
+        <input id="firstName" name="firstName" type="text"><br>
+
+        <label for="lastName">Last Name:</label>
+        <input id="lastName" name="lastName" type="text"><br>
+
+        <button type="submit">Update Name</button>
+    </form>
+</th:block>
+<th:block th:unless="${#strings.equals(session.user.role, 'ADMIN')}">
+    <form method="post" th:action="@{/profile/edit/phone}">
+
+        <label for="phoneNumber">Phone Number:</label>
+        <input id="phoneNumber" name="phoneNumber" type="text"><br>
+
+        <button type="submit">Update Phone</button>
+    </form>
+</th:block>
+
+<th:block th:unless="${#strings.equals(session.user.role, 'ADMIN')}">
+    <form enctype="multipart/form-data" method="post" th:action="@{/profile/edit/picture}">
+        Profile Picture:
+        <input accept="image/*" name="profilePicture" type="file"/>
+        <button type="submit">Update Profile Picture</button>
+    </form>
+</th:block>
+
+<th:block th:unless="${#strings.equals(session.user.role, 'ADMIN')}">
+    <a th:href="@{/profile/delete/confirm}">Delete My Account</a>
+</th:block>
+<th:block th:if="${#strings.equals(session.user.role, 'WRITER')}">
+    <a th:href="@{/write}">Write an article</a>
+</th:block>
+
+<th:block th:if="${#strings.equals(session.user.role, 'ADMIN')}">
+    <a th:href="@{/admin/users}">Manage Users</a>
+    <a th:href="@{/admin/articles}">Manage Articles</a>
+        <a th:href="@{/admin/categories}">Manage Categories</a>
+</th:block>
+
+</body>
+
+</html>

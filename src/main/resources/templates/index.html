@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>The Wasted Times</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+</head>
+
+<body>
+<div id="entry">
+    <div class="main typography use-theme-bg" id="main">
+        <div th:replace="~{fragments/header :: div}"></div>
+        <div class="home-page home-page--modular">
+            <div class="pc-display-flex pc-flexDirection-column pc-reset frontend-main-home-ModularHome-module__container--u5zRH">
+                <div class="pc-display-flex pc-flexDirection-column pc-gap-44 pc-paddingTop-0 pc-reset">
+                    <div>
+                        <div class="frontend-main-home-Layout-module__container--GJ6Wt frontend-main-home-Layout-module__full-width--ziPTp">
+                            <div class="pc-display-flex pc-flexDirection-column pc-reset pc-borderRadius-small article-default article-principal">
+                                <div class="frontend-main-home-PostPreview-PostPreviewJumbo-module__container--TIl7m"
+                                     th:if="${highlightedArticle}">
+                                    <div class="frontend-main-home-PostPreview-PostPreviewJumbo-module__image--kibZN frontend-main-home-PostPreview-PostPreviewCoverImage-module__container--Wg_Ug"
+                                         style="aspect-ratio: 1.618">
+                                        <img alt="image"
+                                             class="frontend-components-responsive_img-module__img--Pgjj2 frontend-main-home-PostPreview-PostPreviewCoverImage-module__image--rPbBU pc-reset"
+                                             th:if="${highlightedArticle.image != null}"
+                                             th:src="'data:image/png;base64, ' + ${highlightedArticle.image}"/>
+                                    </div>
+                                    <div class="pc-display-flex pc-flexDirection-column pc-paddingLeft-32 pc-paddingRight-32 pc-paddingTop-24 pc-paddingBottom-24 pc-justifyContent-center pc-alignItems-center pc-reset frontend-main-home-PostPreview-PostPreviewJumbo-module__content--PDmTG">
+                                        <div class="pc-display-flex pc-flexDirection-column pc-paddingBottom-8 pc-reset">
+                                            <a class="pc-reset frontend-pencraft-Text-module__align-center--HMNAZ frontend-pencraft-Text-module__line-height-40--IuB7y frontend-pencraft-Text-module__font-pub-headings--lbOZ2 frontend-pencraft-Text-module__size-28--QPmK_ frontend-pencraft-Text-module__clamp--a1dYM frontend-pencraft-Text-module__clamp-3--R6uR3 frontend-pencraft-Text-module__reset--dW0zZ"
+                                               th:href="@{'/article/' + ${highlightedArticle.id}}"
+                                               th:text="${highlightedArticle.title}"></a>
+                                        </div>
+                                        <div class="pc-display-flex pc-flexDirection-column pc-paddingBottom-20 pc-reset">
+                                            <a class="pc-reset frontend-pencraft-Text-module__color-pub-secondary-text--OzRTa frontend-pencraft-Text-module__align-center--HMNAZ frontend-pencraft-Text-module__line-height-24--lgb2s frontend-pencraft-Text-module__font-text--QmNJR frontend-pencraft-Text-module__size-16--fFowu frontend-pencraft-Text-module__clamp--a1dYM frontend-pencraft-Text-module__clamp-3--R6uR3 frontend-pencraft-Text-module__reset--dW0zZ"
+                                               th:href="${highlightedArticle.id}"
+                                               th:text="${highlightedArticle.subtitle}"></a>
+                                        </div>
+                                        <div class="pc-reset frontend-pencraft-Text-module__color-pub-secondary-text--OzRTa frontend-pencraft-Text-module__line-height-20--p0dP8 frontend-pencraft-Text-module__font-meta--U_nxy frontend-pencraft-Text-module__size-11--k1e8b frontend-pencraft-Text-module__weight-medium--x7khA frontend-pencraft-Text-module__transform-uppercase--IDkUL frontend-pencraft-Text-module__reset--dW0zZ frontend-pencraft-Text-module__meta--jzHdd frontend-main-home-PostPreview-PostPreviewAuthors-module__textContainer--DYUfJ">
+                                            <time class="frontend-main-home-PostPreview-PostPreviewAuthors-module__date--MMeK8"
+                                                  th:text="${#temporals.format(highlightedArticle.publicationDate, 'MMM dd, yyyy')}"></time>
+                                            •
+                                            <div class="profile-hover-card-target frontend-reader2-ProfileAndPublicationHoverCard-module__profileHoverCardTarget--Od_YL">
+                                                <p class="frontend-main-home-PostPreview-PostPreviewAuthors-module__link--XzaS3"
+                                                   th:text="${highlightedArticle.user.name}"></p>
+                                            </div>
+                                        </div>
+                                        <div class="pc-display-flex pc-flexDirection-column pc-paddingTop-20 pc-reset">
+                                            <div class="pc-display-flex pc-flexDirection-column pc-reset frontend-main-home-PostPreview-index-module__actions--eae29">
+                                                <div class="post-ufi style-compressed highlight">
+                                                    <div class="like-button-container post-ufi-button style-compressed">
+                                                        <a class="post-ufi-button style-compressed has-label with-border"
+                                                           role="button">
+                                                            <svg class="icon" fill="#000000" height="16" role="img"
+                                                                 stroke="#000" stroke-width="2"
+                                                                 style="height: 16px; width: 16px;"
+                                                                 viewBox="0 0 24 24" width="16"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <g>
+                                                                    <svg class="lucide lucide-heart " height="24"
+                                                                         stroke-linecap="round"
+                                                                         stroke-linejoin="round" stroke-width="2"
+                                                                         viewBox="0 0 24 24" width="24"
+                                                                         xmlns="http://www.w3.org/2000/svg">
+                                                                        <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z">
+                                                                        </path>
+                                                                    </svg>
+                                                                </g>
+                                                            </svg>
+                                                            <div class="label">14</div>
+                                                        </a>
+                                                    </div>
+                                                    <a class="post-ufi-button style-compressed post-ufi-comment-button no-label with-border"
+                                                       href="#" role="button">
+                                                        <svg class="icon" fill="#000000" height="16" role="img"
+                                                             stroke="#000" stroke-width="2"
+                                                             style="height: 16px; width: 16px;" viewBox="0 0 24 24"
+                                                             width="16" xmlns="http://www.w3.org/2000/svg">
+                                                            <g>
+                                                                <title></title>
+                                                                <svg class="lucide lucide-message-circle "
+                                                                     height="24" stroke-linecap="round"
+                                                                     stroke-linejoin="round" stroke-width="2"
+                                                                     viewBox="0 0 24 24" width="24"
+                                                                     xmlns="http://www.w3.org/2000/svg">
+                                                                    <path d="m3 21 1.9-5.7a8.5 8.5 0 1 1 3.8 3.8z">
+                                                                    </path>
+                                                                </svg>
+                                                            </g>
+                                                        </svg>
+                                                    </a><a
+                                                        class="post-ufi-button style-compressed no-label with-border"
+                                                        href="javascript:void(0)" role="button">
+                                                    <svg class="icon" fill="none" height="16"
+                                                         stroke="currentColor" stroke-linecap="round"
+                                                         stroke-linejoin="round" stroke-width="2"
+                                                         viewBox="0 0 24 24" width="24"
+                                                         xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8">
+                                                        </path>
+                                                        <polyline points="16 6 12 2 8 6"></polyline>
+                                                        <line x1="12" x2="12" y1="2" y2="15"></line>
+                                                    </svg>
+                                                </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="frontend-main-home-Layout-module__container--GJ6Wt frontend-main-home-Layout-module__full-width--ziPTp">
+                            <div class="pc-display-flex pc-flexDirection-column pc-gap-12 pc-reset">
+                                <div class="pc-display-flex pc-paddingLeft-8 pc-paddingRight-8 pc-justifyContent-space-between pc-reset">
+                                    <div class="pc-reset frontend-pencraft-Text-module__color-pub-primary-text--RzL7j frontend-pencraft-Text-module__weight-bold--Ps9DB frontend-pencraft-Text-module__reset--dW0zZ frontend-main-home-sidebar-SidebarTitle-module__title--njy6c">
+                                        Most Recent
+                                    </div>
+                                    <a class="show-more pc-reset frontend-pencraft-Text-module__color-pub-primary-text--RzL7j frontend-pencraft-Text-module__line-height-20--p0dP8 frontend-pencraft-Text-module__font-meta--U_nxy frontend-pencraft-Text-module__size-11--k1e8b frontend-pencraft-Text-module__weight-medium--x7khA frontend-pencraft-Text-module__transform-uppercase--IDkUL frontend-pencraft-Text-module__reset--dW0zZ frontend-pencraft-Text-module__meta--jzHdd frontend-main-home-MetaLink-module__link--b9iM0"
+                                       href="#">Show more</a>
+                                </div>
+
+                                <div class="article-container recent-articles">
+                                    <th:block th:each="article : ${recentArticles}">
+                                        <div class="pc-display-flex pc-flexDirection-column pc-reset pc-borderRadius-small article-default">
+                                            <div class="pc-display-flex pc-flexDirection-column pc-padding-12 pc-reset">
+                                                <div class="pc-display-flex pc-gap-12 pc-paddingBottom-8 frontend-pencraft-Box-module__flexGrow--mx4xz pc-reset">
+                                                    <div class="pc-display-flex pc-flexDirection-column frontend-pencraft-Box-module__flexGrow--mx4xz pc-reset">
+                                                        <div class="pc-display-flex pc-flexDirection-column pc-paddingBottom-4 pc-reset">
+                                                            <a class="pc-reset frontend-pencraft-Text-module__line-height-20--p0dP8 frontend-pencraft-Text-module__font-pub-headings--lbOZ2 frontend-pencraft-Text-module__size-14--Ume6q frontend-pencraft-Text-module__clamp--a1dYM frontend-pencraft-Text-module__clamp-2--kM7cV frontend-pencraft-Text-module__reset--dW0zZ"
+                                                               th:href="@{'/article/' + ${article.id}}"
+                                                               th:text="${article.title}"></a>
+                                                        </div>
+                                                        <div class="pc-reset frontend-pencraft-Text-module__color-pub-secondary-text--OzRTa frontend-pencraft-Text-module__line-height-20--p0dP8 frontend-pencraft-Text-module__font-meta--U_nxy frontend-pencraft-Text-module__size-11--k1e8b frontend-pencraft-Text-module__weight-medium--x7khA frontend-pencraft-Text-module__transform-uppercase--IDkUL frontend-pencraft-Text-module__clamp--a1dYM frontend-pencraft-Text-module__clamp-1--qD_7y frontend-pencraft-Text-module__reset--dW0zZ frontend-pencraft-Text-module__meta--jzHdd frontend-main-home-PostPreview-PostPreviewAuthors-module__textContainer--DYUfJ">
+                                                            <time class="frontend-main-home-PostPreview-PostPreviewAuthors-module__date--MMeK8"
+                                                                  th:text="${#temporals.format(article.publicationDate, 'MMM dd, yyyy')}"></time>
+                                                            • <p
+                                                                class="frontend-main-home-PostPreview-PostPreviewAuthors-module__link--XzaS3"
+                                                                th:text="${article.user.name}"></p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="frontend-main-home-PostPreview-PostPreviewMini-module__image--Zfhnm frontend-main-home-PostPreview-PostPreviewCoverImage-module__container--Wg_Ug"
+                                                         style="aspect-ratio: 1">
+                                                        <img alt="image"
+                                                             class="frontend-components-responsive_img-module__img--Pgjj2 frontend-main-home-PostPreview-PostPreviewCoverImage-module__image--rPbBU pc-reset"
+                                                             height="150" style="aspect-ratio: 1"
+                                                             th:if="${article.image != null}"
+                                                             th:src="'data:image/png;base64, ' + ${article.image}"
+                                                             width="150"/>
+                                                    </div>
+                                                </div>
+                                                <div class="pc-display-flex pc-flexDirection-column pc-reset frontend-main-home-PostPreview-index-module__actions--eae29">
+                                                    <div class="post-ufi style-compressed justified themed">
+                                                        <div class="like-button-container post-ufi-button style-compressed">
+                                                            <a class="post-ufi-button style-compressed has-label with-border"
+                                                               role="button">
+                                                                <svg class="icon" fill="#000000" height="16"
+                                                                     role="img" stroke="#000" stroke-width="2"
+                                                                     style="height: 16px; width: 16px;"
+                                                                     viewBox="0 0 24 24" width="16"
+                                                                     xmlns="http://www.w3.org/2000/svg">
+                                                                    <g>
+                                                                        <title></title>
+                                                                        <svg class="lucide lucide-heart "
+                                                                             height="24" stroke-linecap="round"
+                                                                             stroke-linejoin="round" stroke-width="2"
+                                                                             viewBox="0 0 24 24" width="24"
+                                                                             xmlns="http://www.w3.org/2000/svg">
+                                                                            <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z">
+                                                                            </path>
+                                                                        </svg>
+                                                                    </g>
+                                                                </svg>
+                                                                <div class="label">6</div>
+                                                            </a>
+                                                        </div>
+                                                        <a class="post-ufi-button style-compressed post-ufi-comment-button has-label with-border"
+                                                           href="#" role="button">
+                                                            <svg class="icon" fill="#000000" height="16" role="img"
+                                                                 stroke="#000" stroke-width="2"
+                                                                 style="height: 16px; width: 16px;"
+                                                                 viewBox="0 0 24 24" width="16"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                <g>
+                                                                    <title></title>
+                                                                    <svg class="lucide lucide-message-circle "
+                                                                         height="24" stroke-linecap="round"
+                                                                         stroke-linejoin="round" stroke-width="2"
+                                                                         viewBox="0 0 24 24" width="24"
+                                                                         xmlns="http://www.w3.org/2000/svg">
+                                                                        <path d="m3 21 1.9-5.7a8.5 8.5 0 1 1 3.8 3.8z">
+                                                                        </path>
+                                                                    </svg>
+                                                                </g>
+                                                            </svg>
+                                                            <div class="label">3</div>
+                                                        </a><a
+                                                            class="post-ufi-button style-compressed no-label with-border"
+                                                            href="javascript:void(0)" role="button">
+                                                        <svg class="icon" fill="none" height="16"
+                                                             stroke="currentColor" stroke-linecap="round"
+                                                             stroke-linejoin="round" stroke-width="2"
+                                                             viewBox="0 0 24 24" width="24"
+                                                             xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8">
+                                                            </path>
+                                                            <polyline points="16 6 12 2 8 6"></polyline>
+                                                            <line x1="12" x2="12" y1="2" y2="15"></line>
+                                                        </svg>
+                                                    </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="pc-display-flex pc-paddingTop-16 pc-paddingBottom-16 pc-alignItems-center pc-reset frontend-main-home-PostsLayout-module__divider--AxHuX frontend-main-home-PostsLayout-module__dividerVertical--eFKbV">
+                                            <div class=" pc-display-flex pc-reset frontend-pencraft-Box-module__border-left-detail-themed--SLWvx">
+                                            </div>
+                                        </div>
+                                    </th:block>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="pc-display-flex pc-flexDirection-column pc-reset frontend-main-home-ModularHome-module__bodyContainer--UX7ez"
+                     id="modular-home-posts">
+                    <div>
+                        <div class="frontend-main-home-Layout-module__container--GJ6Wt frontend-main-home-Layout-module__full-width--ziPTp">
+                            <div class="pc-display-flex pc-flexDirection-column pc-paddingLeft-8 pc-paddingRight-8 pc-paddingTop-24 pc-paddingBottom-24 pc-reset">
+                                <div class="pc-display-flex pc-reset frontend-pencraft-Box-module__border-bottom-detail-themed--eVwFY">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="home-body" style="scroll-margin-top: 48px;">
+                        <div>
+                            <div class="frontend-main-home-Layout-module__container--GJ6Wt frontend-main-home-Layout-module__full-width-with-sidebar--vLFfe frontend-main-home-Layout-module__show-below--NmYGu">
+                                <div class="portable-archive">
+                                    <div class="pc-display-flex pc-paddingLeft-8 pc-paddingRight-8 pc-paddingBottom-16 pc-justifyContent-space-between pc-alignItems-center pc-reset">
+                                        <div class="pc-display-flex pc-gap-8 pc-reset">
+                                            <div class="frontend-pencraft-unstable-PillTabs-module__pillTab--cqGWE frontend-pencraft-unstable-PillTabs-module__pillTabActive--bmZsx"
+                                                 role="button">
+                                                Featured
+                                            </div>
+                                            <div class="frontend-pencraft-unstable-PillTabs-module__pillTab--cqGWE"
+                                                 role="button">
+                                                Popular
+                                            </div>
+                                        </div>
+                                        <div class="frontend-main-home-ArchiveAdapted-module__iconButton--_iQQr"
+                                             role="button">
+                                            <svg fill="none" height="20" role="img" stroke="#000" stroke-width="1.8"
+                                                 style="height: 20px; width: 20px;" viewBox="0 0 24 24" width="20"
+                                                 xmlns="http://www.w3.org/2000/svg">
+                                                <g>
+                                                    <title></title>
+                                                    <path d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19Z"
+                                                          stroke="#555555" stroke-linecap="round"
+                                                          stroke-linejoin="round" stroke-width="1.5"></path>
+                                                    <path d="M21.0004 21.0004L16.6504 16.6504" stroke="#555555"
+                                                          stroke-linecap="round" stroke-linejoin="round"
+                                                          stroke-width="1.5">
+                                                    </path>
+                                                </g>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="portable-archive-list">
+                                        <div>
+                                            <div class="article-container main-article-container">
+                                                <th:block th:each="article: ${featuredArticles}">
+                                                    <div class="pc-display-flex pc-flexDirection-column pc-reset pc-borderRadius-small article-default">
+                                                        <div class="pc-display-flex pc-flexDirection-column pc-padding-12 pc-reset">
+                                                            <div class="frontend-main-home-PostPreview-PostPreviewSquare-module__image--yvn4j frontend-main-home-PostPreview-PostPreviewCoverImage-module__container--Wg_Ug"
+                                                                 style="aspect-ratio: 1.618"
+                                                                 th:if="${article.image != null}">
+                                                                <img alt
+                                                                     class="frontend-components-responsive_img-module__img--Pgjj2 frontend-main-home-PostPreview-PostPreviewCoverImage-module__image--rPbBU pc-reset"
+                                                                     loading="lazy" style="aspect-ratio: 1.618"
+                                                                     th:src="'data:image/png;base64, ' + ${article.image}"/>
+                                                            </div>
+                                                            <div class="pc-display-flex pc-flexDirection-column pc-gap-12 pc-paddingTop-12 frontend-pencraft-Box-module__flexGrow--mx4xz pc-reset">
+                                                                <div class="pc-display-flex pc-flexDirection-column pc-gap-8 frontend-pencraft-Box-module__flexGrow--mx4xz pc-reset">
+                                                                    <div class="pc-display-flex pc-flexDirection-column pc-reset">
+                                                                        <a class="pc-reset frontend-pencraft-Text-module__line-height-28--NgO1Q frontend-pencraft-Text-module__font-pub-headings--lbOZ2 frontend-pencraft-Text-module__size-18--zqngu frontend-pencraft-Text-module__clamp--a1dYM frontend-pencraft-Text-module__clamp-3--R6uR3 frontend-pencraft-Text-module__reset--dW0zZ"
+                                                                           th:href="@{'/article/' + ${article.id}}"
+                                                                           th:text="${article.title}"></a>
+                                                                    </div>
+                                                                    <div class="pc-display-flex pc-flexDirection-column pc-reset">
+                                                                        <a class="pc-reset frontend-pencraft-Text-module__color-pub-secondary-text--OzRTa frontend-pencraft-Text-module__line-height-20--p0dP8 frontend-pencraft-Text-module__font-text--QmNJR frontend-pencraft-Text-module__size-14--Ume6q frontend-pencraft-Text-module__clamp--a1dYM frontend-pencraft-Text-module__clamp-1--qD_7y frontend-pencraft-Text-module__reset--dW0zZ"
+                                                                           th:href="${article.id}"
+                                                                           th:text="${article.subtitle}"></a>
+                                                                    </div>
+                                                                    <div class="pc-reset frontend-pencraft-Text-module__color-pub-secondary-text--OzRTa frontend-pencraft-Text-module__line-height-20--p0dP8 frontend-pencraft-Text-module__font-meta--U_nxy frontend-pencraft-Text-module__size-11--k1e8b frontend-pencraft-Text-module__weight-medium--x7khA frontend-pencraft-Text-module__transform-uppercase--IDkUL frontend-pencraft-Text-module__reset--dW0zZ frontend-pencraft-Text-module__meta--jzHdd frontend-main-home-PostPreview-PostPreviewAuthors-module__textContainer--DYUfJ">
+                                                                        <time class="frontend-main-home-PostPreview-PostPreviewAuthors-module__date--MMeK8"
+                                                                              th:text="${#temporals.format(article.publicationDate, 'MMM dd, yyyy')}">
+                                                                        </time>
+                                                                        •
+                                                                        <div class="profile-hover-card-target frontend-reader2-ProfileAndPublicationHoverCard-module__profileHoverCardTarget--Od_YL">
+                                                                            <p class="frontend-main-home-PostPreview-PostPreviewAuthors-module__link--XzaS3"
+                                                                               th:text="${article.user.name}"></p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="pc-display-flex pc-flexDirection-column pc-reset frontend-main-home-PostPreview-index-module__actions--eae29">
+                                                                    <div class="post-ufi style-compressed justified themed">
+                                                                        <div class="like-button-container post-ufi-button style-compressed">
+                                                                            <a class="post-ufi-button style-compressed has-label with-border"
+                                                                               role="button">
+                                                                                <svg class="icon" fill="#000000"
+                                                                                     height="16" role="img"
+                                                                                     stroke="#000" stroke-width="2"
+                                                                                     style="height: 16px; width: 16px;"
+                                                                                     viewBox="0 0 24 24" width="16"
+                                                                                     xmlns="http://www.w3.org/2000/svg">
+                                                                                    <g>
+                                                                                        <svg class="lucide lucide-heart "
+                                                                                             height="24"
+                                                                                             stroke-linecap="round"
+                                                                                             stroke-linejoin="round"
+                                                                                             stroke-width="2"
+                                                                                             viewBox="0 0 24 24"
+                                                                                             width="24"
+                                                                                             xmlns="http://www.w3.org/2000/svg">
+                                                                                            <path
+                                                                                                    d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z">
+                                                                                            </path>
+                                                                                        </svg>
+                                                                                    </g>
+                                                                                </svg>
+                                                                                <div class="label">1</div>
+                                                                            </a>
+                                                                        </div>
+                                                                        <a class="post-ufi-button style-compressed post-ufi-comment-button has-label with-border"
+                                                                           href="#" role="button">
+                                                                            <svg class="icon" fill="#000000"
+                                                                                 height="16" role="img" stroke="#000"
+                                                                                 stroke-width="2"
+                                                                                 style="height: 16px; width: 16px;"
+                                                                                 viewBox="0 0 24 24" width="16"
+                                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                                <g>
+                                                                                    <svg class="lucide lucide-message-circle "
+                                                                                         height="24"
+                                                                                         stroke-linecap="round"
+                                                                                         stroke-linejoin="round"
+                                                                                         stroke-width="2"
+                                                                                         viewBox="0 0 24 24"
+                                                                                         width="24"
+                                                                                         xmlns="http://www.w3.org/2000/svg">
+                                                                                        <path
+                                                                                                d="m3 21 1.9-5.7a8.5 8.5 0 1 1 3.8 3.8z">
+                                                                                        </path>
+                                                                                    </svg>
+                                                                                </g>
+                                                                            </svg>
+                                                                            <div class="label">1</div>
+                                                                        </a><a
+                                                                            class="post-ufi-button style-compressed no-label with-border"
+                                                                            href="javascript:void(0)" role="button">
+                                                                        <svg class="icon" fill="none"
+                                                                             height="16" stroke="currentColor"
+                                                                             stroke-linecap="round"
+                                                                             stroke-linejoin="round"
+                                                                             stroke-width="2" viewBox="0 0 24 24"
+                                                                             width="24"
+                                                                             xmlns="http://www.w3.org/2000/svg">
+                                                                            <path
+                                                                                    d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8">
+                                                                            </path>
+                                                                            <polyline points="16 6 12 2 8 6">
+                                                                            </polyline>
+                                                                            <line x1="12" x2="12" y1="2"
+                                                                                  y2="15">
+                                                                            </line>
+                                                                        </svg>
+                                                                    </a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="pc-display-flex pc-reset frontend-pencraft-Box-module__border-bottom-detail-themed--eVwFY frontend-main-home-PostsLayout-module__divider--AxHuX">
+                                                    </div>
+                                                </th:block>
+                                            </div>
+                                            <div class="pc-display-flex pc-paddingTop-16 pc-reset">
+                                                <button
+                                                        class="frontend-pencraft-Button-module__buttonBase--T0hXz frontend-pencraft-Button-module__button--d6e9L frontend-pencraft-Button-module__priority_secondary-theme--YMjyc frontend-pencraft-Button-module__size_medium--PaDMH frontend-pencraft-Button-module__fill_outline--FmYR9 pc-justifyContent-center"
+                                                        data-href="/archive?sort=new" data-testid="archive-view-all"
+                                                        tabIndex="0" type="button">
+                                                    Show More
+                                                    <svg class="lucide lucide-chevron-right " fill="none"
+                                                         height="20" stroke="currentColor" stroke-linecap="round"
+                                                         stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"
+                                                         width="20" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="m9 18 6-6-6-6"></path>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="pc-display-flex pc-flexDirection-column pc-gap-32 pc-reset">
+                                    <div class="pc-display-flex pc-flexDirection-column pc-gap-24 pc-paddingLeft-8 pc-paddingRight-8 pc-reset home-sidebar">
+                                        <div class="pc-display-flex pc-flexDirection-column pc-gap-8 pc-reset bottom-container">
+                                            <div>
+                                                <div class="pc-reset frontend-pencraft-Text-module__color-pub-primary-text--RzL7j secondary-title">
+                                                    The Wasted Times
+                                                </div>
+                                                <div class="pc-reset frontend-pencraft-Text-module__color-pub-secondary-text--OzRTa frontend-pencraft-Text-module__line-height-20--p0dP8 frontend-pencraft-Text-module__font-text--QmNJR frontend-pencraft-Text-module__size-12--KorQF frontend-pencraft-Text-module__reset--dW0zZ">
+                                                    Subscribe now and enjoy the fine art of creative storytelling,
+                                                    presented as news.
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="subscribe-widget" data-component-name="SubscribeWidget">
+                                            <div class="pc-display-flex pc-justifyContent-center pc-reset">
+                                                <div class="frontend-components-free_email_form-module__container--OfBh4">
+                                                    <div class="frontend-components-free_email_form-module__sideBySideWrap--yhsgv">
+                                                        <button class="button rightButton primary subscribe-btn frontend-components-free_email_form-module__button--WcLG9">
+                                                            <span class="button-text ">Subscribe</span></button>
+                                                    </div>
+                                                    <div class="frontend-login-typo_handler-EmailTypoHandler-module__animationWrapper--UT0du">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="pc-display-flex pc-flexDirection-column pc-gap-24 pc-reset">
+                                        <div class="pc-display-flex pc-flexDirection-column pc-gap-16 pc-reset">
+                                            <div class="pc-display-flex pc-paddingLeft-8 pc-paddingRight-8 pc-paddingBottom-8 pc-alignItems-center pc-reset frontend-pencraft-Box-module__border-bottom-detail-themed--eVwFY">
+                                                <div class="pc-reset bottom-title frontend-pencraft-Text-module__color-pub-primary-text--RzL7j frontend-pencraft-Text-module__weight-bold--Ps9DB frontend-pencraft-Text-module__reset--dW0zZ frontend-main-home-sidebar-SidebarTitle-module__title--njy6c">
+                                                    Other Projects
+                                                </div>
+                                            </div>
+                                            <div class="pc-display-flex pc-flexDirection-column pc-gap-4 pc-reset">
+                                                <a href="#" rel="noopener"
+                                                   style="text-decoration: none; display: block;" target="_blank">
+                                                    <div class="pc-padding-8 pc-reset pc-borderRadius-small frontend-pencraft-unstable-ClickBox-module__container--Fi9JA frontend-pencraft-unstable-ClickBox-module__containerHoverLight--nsdj2">
+                                                        <div class="pc-display-flex pc-gap-16 pc-alignItems-center pc-reset">
+                                                            <div class="pc-display-flex pc-flexDirection-column pc-gap-8 pc-reset">
+                                                                <div class="pc-display-flex pc-flexDirection-column pc-reset"
+                                                                     style="word-break: break-word;">
+                                                                    <div class="pc-reset frontend-pencraft-Text-module__color-pub-primary-text--RzL7j frontend-pencraft-Text-module__line-height-20--p0dP8 frontend-pencraft-Text-module__size-14--Ume6q frontend-pencraft-Text-module__reset--dW0zZ">
+                                                                        My Portfolio
+                                                                    </div>
+                                                                    <div class="pc-reset frontend-pencraft-Text-module__color-pub-secondary-text--OzRTa frontend-pencraft-Text-module__line-height-20--p0dP8 frontend-pencraft-Text-module__font-text--QmNJR frontend-pencraft-Text-module__size-12--KorQF frontend-pencraft-Text-module__weight-normal--s54Wf frontend-pencraft-Text-module__clamp--a1dYM frontend-pencraft-Text-module__clamp-3--R6uR3 frontend-pencraft-Text-module__reset--dW0zZ frontend-pencraft-Text-module__body4--Pl3xY">
+                                                                        Discover more in my portfolio
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="pc-display-flex pc-flexDirection-column pc-gap-16 pc-reset">
+                                            <div class="pc-display-flex pc-paddingLeft-8 pc-paddingRight-8 pc-paddingBottom-8 pc-alignItems-center pc-reset frontend-pencraft-Box-module__border-bottom-detail-themed--eVwFY">
+                                                <div class="pc-reset bottom-title frontend-pencraft-Text-module__color-pub-primary-text--RzL7j frontend-pencraft-Text-module__weight-bold--Ps9DB frontend-pencraft-Text-module__reset--dW0zZ frontend-main-home-sidebar-SidebarTitle-module__title--njy6c">
+                                                    Socials
+                                                </div>
+                                            </div>
+                                            <div class="pc-display-flex pc-flexDirection-column pc-gap-4 pc-reset">
+                                                <a href="https://github.com/rawdx" rel="noopener"
+                                                   style="text-decoration: none; display: block;" target="_blank">
+                                                    <div class="pc-padding-8 pc-reset pc-borderRadius-small frontend-pencraft-unstable-ClickBox-module__container--Fi9JA frontend-pencraft-unstable-ClickBox-module__containerHoverLight--nsdj2">
+                                                        <div class="pc-display-flex pc-gap-16 pc-alignItems-center pc-reset">
+                                                            <div class="pc-display-flex pc-flexDirection-column pc-gap-8 pc-reset">
+                                                                <div class="pc-display-flex pc-flexDirection-column pc-reset"
+                                                                     style="word-break: break-word;">
+                                                                    <div class="pc-reset frontend-pencraft-Text-module__color-pub-primary-text--RzL7j frontend-pencraft-Text-module__line-height-20--p0dP8 frontend-pencraft-Text-module__size-14--Ume6q frontend-pencraft-Text-module__reset--dW0zZ">
+                                                                        Github
+                                                                    </div>
+                                                                    <div class="pc-reset frontend-pencraft-Text-module__color-pub-secondary-text--OzRTa frontend-pencraft-Text-module__line-height-20--p0dP8 frontend-pencraft-Text-module__font-text--QmNJR frontend-pencraft-Text-module__size-12--KorQF frontend-pencraft-Text-module__weight-normal--s54Wf frontend-pencraft-Text-module__clamp--a1dYM frontend-pencraft-Text-module__clamp-3--R6uR3 frontend-pencraft-Text-module__reset--dW0zZ frontend-pencraft-Text-module__body4--Pl3xY">
+                                                                        Explore my repositories on Github
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                                <a href="https://www.linkedin.com/in/raulcorderod/" rel="noopener"
+                                                   style="text-decoration: none; display: block;" target="_blank">
+                                                    <div class="pc-padding-8 pc-reset pc-borderRadius-small frontend-pencraft-unstable-ClickBox-module__container--Fi9JA frontend-pencraft-unstable-ClickBox-module__containerHoverLight--nsdj2">
+                                                        <div class="pc-display-flex pc-gap-16 pc-alignItems-center pc-reset">
+                                                            <div class="pc-display-flex pc-flexDirection-column pc-gap-8 pc-reset">
+                                                                <div class="pc-display-flex pc-flexDirection-column pc-reset"
+                                                                     style="word-break: break-word;">
+                                                                    <div class="pc-reset frontend-pencraft-Text-module__color-pub-primary-text--RzL7j frontend-pencraft-Text-module__line-height-20--p0dP8 frontend-pencraft-Text-module__size-14--Ume6q frontend-pencraft-Text-module__reset--dW0zZ">
+                                                                        Linkedin
+                                                                    </div>
+                                                                    <div class="pc-reset frontend-pencraft-Text-module__color-pub-secondary-text--OzRTa frontend-pencraft-Text-module__line-height-20--p0dP8 frontend-pencraft-Text-module__font-text--QmNJR frontend-pencraft-Text-module__size-12--KorQF frontend-pencraft-Text-module__weight-normal--s54Wf frontend-pencraft-Text-module__clamp--a1dYM frontend-pencraft-Text-module__clamp-3--R6uR3 frontend-pencraft-Text-module__reset--dW0zZ frontend-pencraft-Text-module__body4--Pl3xY">
+                                                                        Connect with me on LinkedIn
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div th:replace="~{fragments/footer :: div}"></div>
+    </div>
+</div>
+<script th:src="@{/js/main.js}"></script>
+
+</body>
+
+</html>

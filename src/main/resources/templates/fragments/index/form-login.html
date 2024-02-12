@@ -1,0 +1,9 @@
+<form th:action="@{/login}" th:method="post">
+    <label for="login-email">Email:</label>
+    <input id="login-email" maxlength="255" name="email" required type="text"><br>
+
+    <label for="login-password">Password:</label>
+    <input id="login-password" maxlength="255" name="password" required type="password"><br>
+
+    <button type="submit">Log In</button>
+</form>
