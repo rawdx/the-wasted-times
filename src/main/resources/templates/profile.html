@@ -9,9 +9,9 @@
 
 <body>
 
-	<div th:if="${session.user}">
-		<a th:href="@{/logout}">Logout</a>
-	</div>
+<div th:if="${session.user}">
+    <a th:href="@{/logout}">Logout</a>
+</div>
 
 <h2>User Profile</h2>
 
@@ -19,7 +19,8 @@
     <tr>
         <td>
             <img alt="Image"
-                 class="profile-image" th:if="${session.user.profilePicture != null}" th:src="'data:image/png;base64, ' + ${session.user.profilePicture}"/>
+                 class="profile-image" th:if="${session.user.profilePicture != null}"
+                 th:src="'data:image/png;base64, ' + ${session.user.profilePicture}"/>
             <img alt="Default Image" class="profile-image" src="/img/default-picture.png"
                  th:unless="${session.user.profilePicture != null}"/>
         </td>
@@ -41,14 +42,14 @@
         <td th:text="${session.user.role}"></td>
     </tr>
 </table>
-
+<br>
 <th:block th:if="${!(#strings.equals(session.user.role, 'ADMIN') or session.user.isVerified == true)}">
     <form th:action="@{/resend-verification}" th:method="get">
         <input th:name="email" th:value="${session.user.email}" type="hidden"/>
         <button type="submit">Resend Verification Email</button>
     </form>
 </th:block>
-
+<br>
 <th:block th:unless="${#strings.equals(session.user.role, 'ADMIN')}">
     <form th:action="@{/initiate-password-change}" th:method="get">
         <input th:name="email" th:value="${session.user.email}" type="hidden"/>
@@ -56,8 +57,7 @@
         <button type="submit">Change Password</button>
     </form>
 </th:block>
-
-
+<br>
 <th:block th:unless="${#strings.equals(session.user.role, 'ADMIN')}">
     <form method="post" th:action="@{/profile/edit/email}">
         <label for="email">Email:</label>
@@ -66,7 +66,7 @@
         <button type="submit">Update Email</button>
     </form>
 </th:block>
-
+<br>
 <th:block th:unless="${#strings.equals(session.user.role, 'ADMIN') or #strings.equals(session.user.role, 'WRITER')}">
     <form method="post" th:action="@{/profile/edit/name}">
         <label for="firstName">First Name:</label>
@@ -78,6 +78,7 @@
         <button type="submit">Update Name</button>
     </form>
 </th:block>
+<br>
 <th:block th:unless="${#strings.equals(session.user.role, 'ADMIN')}">
     <form method="post" th:action="@{/profile/edit/phone}">
 
@@ -87,7 +88,7 @@
         <button type="submit">Update Phone</button>
     </form>
 </th:block>
-
+<br>
 <th:block th:unless="${#strings.equals(session.user.role, 'ADMIN')}">
     <form enctype="multipart/form-data" method="post" th:action="@{/profile/edit/picture}">
         Profile Picture:
@@ -95,7 +96,7 @@
         <button type="submit">Update Profile Picture</button>
     </form>
 </th:block>
-
+<br>
 <th:block th:unless="${#strings.equals(session.user.role, 'ADMIN')}">
     <a th:href="@{/profile/delete/confirm}">Delete My Account</a>
 </th:block>
@@ -105,10 +106,14 @@
 
 <th:block th:if="${#strings.equals(session.user.role, 'ADMIN')}">
     <a th:href="@{/admin/users}">Manage Users</a>
+    <br>
     <a th:href="@{/admin/articles}">Manage Articles</a>
-        <a th:href="@{/admin/categories}">Manage Categories</a>
+    <br>
+    <a th:href="@{/admin/categories}">Manage Categories</a>
 </th:block>
-
+<br>
+<br>
+<a th:href="@{/}">Go Back</a>
 </body>
 
 </html>
