@@ -22,7 +22,7 @@
 	<button id="showCreateForm" onclick="toggleForm('createForm')">Create User</button>
 
 	<!-- Create User Form (Initially Hidden) -->
-	<form enctype="multipart/form-data" id="createForm" th:action="@{/admin/create}" th:method="post"
+	<form enctype="multipart/form-data" id="createForm" th:action="@{/admin/users/create}" th:method="post"
 		th:style="${'display: none;'}">
 		<h3>Create User</h3>
 		<label>Email:
