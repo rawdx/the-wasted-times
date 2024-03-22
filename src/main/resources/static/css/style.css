@@ -110,7 +110,8 @@ div.twitter-publications section {
 
 .main-menu .main-menu-content .topbar .topbar-content .navbar-title .navbar-title-link {
     cursor: pointer;
-    text-decoration: none
+    text-decoration: none;
+    font-weight: 600;
 }
 
 .main-menu .main-menu-content .topbar .topbar-content .navbar-title .navbar-title-link .navbar-logo-wordmark {
@@ -24272,6 +24273,16 @@ div.profile-updater form .button[type=submit][disabled]::after {
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     z-index: 1001;
+    width: 400px;
+    height: 250px;
+    text-align: center;
+    align-content: center;
+}
+
+#login-popup input,
+#login-popup button {
+    margin: 10px; /* Agrega margen a los elementos internos */
+    padding: 5px 10px; /* Agrega relleno a los elementos internos */
 }
 
 .navbar-title {
