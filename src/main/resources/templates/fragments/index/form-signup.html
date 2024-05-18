@@ -1,26 +1,40 @@
-<form enctype="multipart/form-data" th:action="@{/signup}" th:method="post">
-
+<form id="signup" enctype="multipart/form-data" th:action="@{/signup}" th:method="post">
+    <div class="row" style="padding: 0 0 15px 0">
+        <div class="col-3"></div>
+        <div class="col-6">
+            <h3>Sign Up</h3>
+        </div>
+        <div class="col-3 form-head">
+            <button onclick="toggleSignupPopup()" class="button login-button close-button sign-in-link outline-grayscale"><i class="fa-solid fa-x"></i></button>
+        </div>
+    </div>
     <label for="profilePicture">
-        <img alt="Default Image" class="image-signup" id="imagePreview" src="/img/default-picture.png"><br>
-        <input accept="image/*" id="profilePicture" name="profilePicture" onchange="previewImage(this)" style="display: none;"
+        <img alt="Default Image" class="image-signup" id="imagePreviewSignUp" src="/img/default-picture.png"><br>
+        <input accept="image/*" id="profilePicture" name="profilePicture" onchange="previewImage(this, 'imagePreviewSignUp')"
+               style="display: none;"
                type="file">
     </label><br>
+    <div class="form-group">
+        <label for="firstName">First Name:</label>
+        <input class="form-control" id="firstName" maxlength="24" name="firstName" type="text"><br>
+    </div>
+    <div class="form-group">
+        <label for="lastName">Last Name:</label>
+        <input class="form-control" id="lastName" maxlength="25" name="lastName" type="text"><br>
+    </div>
+    <div class="form-group">
+        <label for="signup-email">*Email:</label>
+        <input class="form-control" id="signup-email" maxlength="255" name="email" autocomplete="email" required type="text"><br>
+    </div>
+    <div class="form-group">
+        <label for="signup-password">*Password:</label>
+        <input class="form-control" id="signup-password" maxlength="255" name="password" required type="password"><br>
+    </div>
 
-    <label for="firstName">First Name:</label>
-    <input id="firstName" maxlength="24" name="firstName" type="text"><br>
+    <div class="form-group">
+        <label for="phoneNumber">Phone Number:</label>
+        <input class="form-control" id="phoneNumber" maxlength="15" name="phoneNumber" type="text"><br>
+    </div>
 
-    <label for="lastName">Last Name:</label>
-    <input id="lastName" maxlength="25" name="lastName" type="text"><br>
-
-    <label for="signup-email">*Email:</label>
-    <input id="signup-email" maxlength="255" name="email" required type="text"><br>
-
-    <label for="signup-password">*Password:</label>
-    <input id="signup-password" maxlength="255" name="password" required type="password"><br>
-
-    <label for="phoneNumber">Phone Number:</label>
-    <input id="phoneNumber" maxlength="15" name="phoneNumber" type="text"><br>
-
-    <button type="submit">Sign Up</button>
+    <button class="btn btn-primary btn-block" type="submit">Enter</button>
 </form>
-

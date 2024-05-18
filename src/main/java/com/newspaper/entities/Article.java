@@ -1,16 +1,9 @@
 package com.newspaper.entities;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ForeignKey;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 /**
  * Entity representing an article in the application.
@@ -56,6 +49,9 @@ public class Article {
     @ManyToOne()
     @JoinColumn(name = "category_id", foreignKey = @ForeignKey(name = "fk_article_category"))
     private Category category;
+
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments;
 
     //Constructors
 
@@ -158,5 +154,13 @@ public class Article {
         } else {
             this.category = category;
         }
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 }

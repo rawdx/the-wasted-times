@@ -5,7 +5,9 @@ import java.util.List;
 
 import com.newspaper.entities.ArticleStatus;
 import com.newspaper.entities.UserRole;
+import com.newspaper.entities.dtos.CommentDto;
 import com.newspaper.entities.dtos.UserDto;
+import com.newspaper.services.CommentService;
 import com.newspaper.utils.ImageUtils;
 import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
@@ -30,10 +32,12 @@ public class ArticleController {
 	
     private final ArticleService articleService;
 	private final CategoryService categoryService;
+    private final CommentService commentService;
     
-    public ArticleController(ArticleService articleService, CategoryService categoryService) {
+    public ArticleController(ArticleService articleService, CategoryService categoryService, CommentService commentService) {
     	this.articleService = articleService;
     	this.categoryService = categoryService;
+        this.commentService = commentService;
     }
 
     /**
@@ -43,7 +47,7 @@ public class ArticleController {
      * @return The view name for the writing page ("write") or redirects to home if not authorized.
      */
     @GetMapping("/write")
-    public String showWritingPage(HttpSession session) {
+    public String showWritingPage(HttpSession session, Model model) {
         try {
             UserDto user = (UserDto) session.getAttribute("user");
             if (user == null) {
@@ -55,6 +59,9 @@ public class ArticleController {
                 logger.warn("Non-writer user attempted to access writing page: {}", user.getEmail());
                 return "redirect:/";
             }
+
+            List<CategoryDto> categories = categoryService.getAllCategories();
+            model.addAttribute("categories", categories);
 
             return "write";
         } catch (Exception e) {
@@ -74,7 +81,7 @@ public class ArticleController {
      * @return A redirect to the writing page ("/write") after article creation.
      */
     @PostMapping("/write/create")
-    public String createArticle(HttpSession session, @RequestParam String title, @RequestParam String subtitle, @RequestParam String content, @RequestPart("image") MultipartFile file) {
+    public String createArticle(HttpSession session, Model model, @RequestParam String title, @RequestParam String subtitle, @RequestParam String content, @RequestPart("image") MultipartFile file) {
         try {
             UserDto writer = (UserDto) session.getAttribute("user");
 
@@ -82,12 +89,16 @@ public class ArticleController {
 
             if (articleService.createArticle(article, writer.getEmail())) {
                 logger.info("Article created successfully by user {}", writer.getEmail());
+                model.addAttribute("successMessage", "Article created successfully.");
             } else{
                 logger.warn("Failed to create article by user {}", writer.getEmail());
+                model.addAttribute("errorMessage", "Failed to create article. Please try again later.");
+
             }
             return "redirect:/write";
         } catch (Exception e) {
             logger.error("Error creating article", e);
+            model.addAttribute("errorMessage", "An unexpected error occurred. Please try again later.");
             return "redirect:/write";
         }
     }
@@ -104,6 +115,9 @@ public class ArticleController {
         try {
             List<CategoryDto> categories = categoryService.getAllCategories();
             model.addAttribute("categories", categories);
+
+            List<CommentDto> comments = commentService.getAllComments();
+            model.addAttribute("comments", comments);
 
             ArticleDto article = articleService.getArticleById(id);
 

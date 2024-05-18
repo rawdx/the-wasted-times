@@ -44,6 +44,10 @@ public class User {
 	@OneToMany(mappedBy = "user")
 	private List<Article> articles;
 
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Comment> comments;
+
+
 	// Constructors
 
 	public User() {
@@ -124,5 +128,13 @@ public class User {
 
 	public void setArticles(List<Article> articles) {
 		this.articles = articles;
+	}
+
+	public List<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
 	}
 }

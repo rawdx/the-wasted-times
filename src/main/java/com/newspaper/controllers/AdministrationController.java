@@ -82,6 +82,9 @@ public class AdministrationController {
 			model.addAttribute("totalPages", totalPages);
 			model.addAttribute("currentPage", page);
 
+			List<CategoryDto> categories = categoryService.getAllCategories();
+			model.addAttribute("categories", categories);
+
 			return "admin-users";
 		} catch (Exception e) {
 			logger.error("Error while attempting to access admin users page.", e);

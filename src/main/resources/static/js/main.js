@@ -1,5 +1,5 @@
-function previewImage(input) {
-    let preview = document.getElementById('imagePreview');
+function previewImage(input, id) {
+    let preview = document.getElementById(id);
     let file = input.files[0];
     let reader = new FileReader();
 
@@ -22,26 +22,34 @@ function toggleForm(formId) {
 
 function toggleLoginPopup() {
     let loginPopup = document.getElementById('login-popup');
+    let signupPopup = document.getElementById('signup-popup');
     let body = document.body;
+
+    document.body.classList.add("remove-scrolling");
 
     if (loginPopup.style.display === 'block') {
         loginPopup.style.display = 'none';
         body.style.overflow = 'auto';
     } else {
         loginPopup.style.display = 'block';
+        signupPopup.style.display = 'none';
         body.style.overflow = 'hidden';
     }
 }
 
 function toggleSignupPopup() {
     let signupPopup = document.getElementById('signup-popup');
+    let loginPopup = document.getElementById('login-popup');
     let body = document.body;
+
+    document.body.classList.add("remove-scrolling");
 
     if (signupPopup.style.display === 'block') {
         signupPopup.style.display = 'none';
         body.style.overflow = 'auto';
     } else {
         signupPopup.style.display = 'block';
+        loginPopup.style.display = 'none';
         body.style.overflow = 'hidden';
     }
 }

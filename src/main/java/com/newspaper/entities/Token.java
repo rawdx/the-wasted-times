@@ -30,7 +30,6 @@ public class Token {
     //Constructors
     
 	public Token() {
-		super();
 	}
 
 	// Getters and setters

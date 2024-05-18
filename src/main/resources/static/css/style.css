@@ -3,6 +3,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Alegreya:wght@400;500&family=EB+Garamond:wght@400;500&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100;200;300;400;500&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;1,300;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
 .main-menu {
     display: flex;
@@ -650,7 +651,6 @@ div#toast a {
 body,
 html {
     position: relative;
-    overflow-x: hidden
 }
 
 html {
@@ -900,7 +900,7 @@ a.small {
     line-height: var(--font-size-20);
     font-weight: var(--font-weight-600);
     text-align: center;
-    padding: 10px 20px;
+    padding: 9px 20px;
     margin: 0;
     background-color: transparent;
     opacity: 1;
@@ -1833,7 +1833,7 @@ a.small {
 }
 
 .footer-wrap .footer {
-    position: absolute;
+/*    position: absolute;*/
     bottom: 0;
     padding: 32px 0;
     width: 100%;
@@ -8752,11 +8752,11 @@ button.user-indicator.signed-in .menu-trigger-image {
     gap: var(--size-16)
 }
 
-@media screen and (min-width: 768px) {
+
     .single-post-container .single-post-section.comments-section .container {
         margin: var(--size-16) auto
     }
-}
+
 
 .single-post-container .single-post-section.comments-section .container .visibility-check {
     position: absolute
@@ -13361,7 +13361,7 @@ button.user-indicator.signed-in .menu-trigger-image {
 }
 
 .frontend-pencraft-Text-module__size-11--k1e8b.frontend-pencraft-Text-module__size-11--k1e8b.frontend-pencraft-Text-module__size-11--k1e8b.frontend-pencraft-Text-module__size-11--k1e8b {
-    font-size: 11px;
+    font-size: 13px;
     line-height: 14px
 }
 
@@ -13471,7 +13471,7 @@ button.user-indicator.signed-in .menu-trigger-image {
 }
 
 .frontend-pencraft-Text-module__font-text--QmNJR.frontend-pencraft-Text-module__font-text--QmNJR.frontend-pencraft-Text-module__font-text--QmNJR.frontend-pencraft-Text-module__font-text--QmNJR {
-    font-family: 'EB Garamond', serif;
+    font-family: 'Montserrat', sans-serif;
 }
 
 .frontend-pencraft-Text-module__font-serif--vDmr9.frontend-pencraft-Text-module__font-serif--vDmr9.frontend-pencraft-Text-module__font-serif--vDmr9.frontend-pencraft-Text-module__font-serif--vDmr9 {
@@ -23648,7 +23648,6 @@ table.thread-head > tr > td {
     margin: 0;
     padding: 0;
     border: 0;
-    vertical-align: top
 }
 
 .comment .comment-head {
@@ -23686,12 +23685,6 @@ table.thread-head > tr > td {
     cursor: default
 }
 
-.comment .comment-actions span:hover,
-.comment .comment-meta span:hover,
-.comment .show-all-toggle span:hover {
-    cursor: pointer;
-    text-decoration: underline
-}
 
 .comment .comment-actions span.commenter-name,
 .comment .comment-meta span.commenter-name,
@@ -23876,7 +23869,7 @@ table.thread-head > tr > td {
     position: absolute;
     top: 40px;
     left: 0;
-    padding: 0 15.5px;
+    padding: 0 16px;
     height: calc(100% - 51px);
     width: 1px;
     cursor: pointer
@@ -24013,7 +24006,7 @@ table.thread-head > tr > td {
 }
 
 .comment-silhouette .comment-silhouette-content .comment-silhouette-body {
-    margin: 10px 0 12.78px;
+    margin: 10px 0 13px;
     height: 12px;
     width: 100%;
     max-width: 320px
@@ -24197,9 +24190,10 @@ div.profile-updater form .button[type=submit][disabled]::after {
 }
 
 .content-container {
-    font-family: 'EB Garamond', serif;
-    font-size: 20px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 17px;
     padding: 0 10px 15px;
+    line-height: 1.6;
 }
 
 .popup-overlay {
@@ -24235,6 +24229,7 @@ div.profile-updater form .button[type=submit][disabled]::after {
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     z-index: 1001;
+    text-align: center;
 }
 
 .image-navbar {
@@ -24263,7 +24258,7 @@ div.profile-updater form .button[type=submit][disabled]::after {
     backdrop-filter: blur(5px);
 }
 
-#login-popup {
+#login-popup, #signup-popup {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -24274,15 +24269,55 @@ div.profile-updater form .button[type=submit][disabled]::after {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     z-index: 1001;
     width: 400px;
-    height: 250px;
+    height: auto;
     text-align: center;
     align-content: center;
 }
 
+#signup-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    z-index: 1001;
+    width: 400px;
+    height: auto;
+    text-align: center;
+    align-content: center;
+}
+
+@media (max-width: 500px) {
+    #signup-popup, #login-popup {
+        width: 80%;
+    }
+}
+
 #login-popup input,
-#login-popup button {
-    margin: 10px; /* Agrega margen a los elementos internos */
-    padding: 5px 10px; /* Agrega relleno a los elementos internos */
+#signup-popup input,
+#signup-popup img {
+    margin-bottom: 15px; /* Agrega margen a los elementos internos */
+}
+
+#signup-popup input {
+    display: inline;
+}
+
+#login-popup .btn-block,
+#signup-popup .btn-block,
+.write-btn {
+    background-color: #485696;
+    border: none;
+    border-radius: 20px;
+    width: 95px;
+    height: 40px;
+}
+
+#signup-popup label {
+    display: inline-flex;
 }
 
 .navbar-title {
@@ -24300,7 +24335,7 @@ div.profile-updater form .button[type=submit][disabled]::after {
 
 .login-button:hover {
     background-color: var(--background_contrast_1);
-    transition: border-radius .15s ease-in-out
+    transition: .15s ease-in-out
 }
 
 .bottom-container {
@@ -24335,4 +24370,189 @@ div.profile-updater form .button[type=submit][disabled]::after {
 
 .image-preview {
     width: 300px;
+}
+
+.remove-scrolling {
+    height: 30px;
+    overflow: hidden;
+    /*filter: blur(2px);*/
+    /*-webkit-filter: blur(2px);*/
+    /*pointer-events: none;*/
+}
+
+    @media screen and (min-width: 768px) {
+        .single-post-container {
+            width: 728px;
+            margin: 0 auto;
+        }
+    }
+
+@media screen and (max-width: 767px) {
+    .single-post-container {
+        padding: 0 20px;
+    }
+}
+
+._flexGrow_12ngs_227 {
+    flex: 1 1 1px;
+}
+
+._avatar_u4hgo_1 {
+    border-radius: 20px;
+    object-fit: cover;
+}
+
+.comment-profile-image {
+    width: 32px;
+    height: 32px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.delete-confirmation {
+    font-family: 'Montserrat', sans-serif;
+    justify-content: space-evenly;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 20px;
+    text-align: center;
+}
+
+.delete-buttons {
+    display: grid;
+    justify-content: space-between;
+    align-content: space-evenly;
+    align-items: center;
+    justify-items: center;
+}
+
+.delete-cancel-btn {
+    border: solid 1px;
+    border-radius: 20px;
+    margin-bottom: 12px;
+}
+
+.delete-confirm-btn {
+    margin-bottom: 15px;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.post-item {
+    justify-content: right;
+}
+
+.post-item .button {
+    border: var(--border-default-themed);
+    box-sizing: border-box;
+    border-radius: calc(var(--size-40)* .5);
+    height: var(--size-40);
+    min-width: var(--size-40);
+    padding: 0 var(--size-12);
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    align-items: center;
+    background: 0 0;
+    cursor: pointer;
+    font-family: -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+    text-decoration: none;
+    color: var(--print_secondary_on_web_bg_color, var(--color-secondary));
+    width: 70px;
+}
+
+.profile {
+    justify-content: center;
+}
+.profile-card {
+    display: grid;
+    justify-content: center;
+    justify-items: center;
+    align-items: start;
+    margin: 30px;
+}
+
+.profile-actions {
+    margin: 35px 30px;
+    display: grid;
+    justify-items: center;
+}
+.profile-card table tbody {
+    display: grid;
+    justify-items: center;
+}
+
+.profile-title {
+    margin-bottom: 18px;
+}
+
+.profile-image{
+    margin-bottom: 10px;
+}
+
+
+.profile-card table tbody tr td i {
+    padding: 6px 4px 0 0;
+}
+
+.profile-button {
+    border: solid 1px #aeaeae;
+    box-sizing: border-box;
+    border-radius: calc(var(--size-40)* .5);
+    height: var(--size-40);
+    min-width: var(--size-40);
+    padding: 0 var(--size-12);
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    align-items: center;
+    background: 0 0;
+    cursor: pointer;
+    font-family: -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+    text-decoration: none;
+    color: #5b5b5b;
+    width: max-content;
+}
+
+.profile-actions .container {
+    display: grid;
+    justify-items: center;
+}
+
+.profile-setting {
+    display: flex;
+    justify-items: center;
+    align-items: center;
+}
+
+.form-head {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.write-col {
+    justify-content: center;
+    height: auto;
+    padding: 20px;
+    display: block;
+}
+
+.write-col-img {
+    justify-content: center;
+    display: flex;
+    height: auto;
+    padding: 30px;
+}
+.close-button {
+    border-radius: 20px;
+    transition: 0.15s;
+}
+
+.first-title {
+    display: flex;
+    padding: 30px;
+    justify-content: center;
 }

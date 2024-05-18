@@ -36,7 +36,6 @@ public class Category {
 	//Constructors
 
 	public Category() {
-		super();
 	}
 
 	// Getters and setters

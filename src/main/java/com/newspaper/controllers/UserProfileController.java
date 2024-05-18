@@ -1,7 +1,9 @@
 package com.newspaper.controllers;
 
 import com.newspaper.entities.UserRole;
+import com.newspaper.entities.dtos.CategoryDto;
 import com.newspaper.entities.dtos.UserDto;
+import com.newspaper.services.CategoryService;
 import com.newspaper.services.RegistrationService;
 import com.newspaper.services.UserService;
 import com.newspaper.utils.ImageUtils;
@@ -9,8 +11,11 @@ import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 /**
  * Controller responsible for handling user profile-related requests.
@@ -23,10 +28,12 @@ public class UserProfileController {
 
     private final UserService userService;
     private final RegistrationService registrationService;
+    private final CategoryService categoryService;
 
-    public UserProfileController(UserService userService, RegistrationService registrationService) {
+    public UserProfileController(UserService userService, RegistrationService registrationService, CategoryService categoryService) {
         this.userService = userService;
         this.registrationService = registrationService;
+        this.categoryService = categoryService;
     }
 
     /**
@@ -36,7 +43,7 @@ public class UserProfileController {
      * @return The name of the view template to render.
      */
     @GetMapping
-    public String viewProfile(HttpSession session) {
+    public String viewProfile(HttpSession session, Model model) {
         try {
             UserDto user = (UserDto) session.getAttribute("user");
 
@@ -44,6 +51,9 @@ public class UserProfileController {
                 logger.warn("User not found in session.");
                 return "redirect:/";
             }
+
+            List<CategoryDto> categories = categoryService.getAllCategories();
+            model.addAttribute("categories", categories);
 
             logger.info("Viewing profile for user with email: {}", user.getEmail());
             return "profile";
