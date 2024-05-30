@@ -20,7 +20,7 @@
                                 onclick="toggleSignupPopup()"
                                 th:unless="${session.user != null and !(#strings.equals(session.user.role, 'USER'))}"
                                 type="button">
-                            Subscribe
+                            Sign Up
                         </button>
                         <button class="button login-button sign-in-link outline-grayscale" onclick="toggleLoginPopup()"
                                 th:if="${session.user == null}" type="button">Login

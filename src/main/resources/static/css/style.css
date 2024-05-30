@@ -22014,7 +22014,7 @@ p.frontend-main-home-PostPreview-PostPreviewAuthors-module__link--XzaS3 {
 
 .frontend-main-home-ModularHome-module__container--u5zRH {
     box-sizing: content-box;
-    padding: var(--size-44) var(--size-32);
+    padding: var(--size-36) var(--size-44);
     margin-left: auto;
     margin-right: auto;
     max-width: min(100%, 1440px);
@@ -24555,4 +24555,69 @@ div.profile-updater form .button[type=submit][disabled]::after {
     display: flex;
     padding: 30px;
     justify-content: center;
+}
+
+.admin-links {
+    display: flex;
+    justify-content: space-evenly;
+    margin: 0 0 30px;
+}
+
+.data-container {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.pagination-container {
+    display: flex;
+    justify-content: center;
+}
+
+.pagination li {
+    padding: 0 4px;
+}
+
+.create-container {
+    justify-content: center;
+    display: flex;
+    margin: 0 0 25px;
+    flex-direction: column;
+    align-items: center;
+}
+
+.table-row {
+    border: 4px solid transparent;
+}
+
+.create-form {
+    flex-direction: column;
+}
+
+.update-form, .delete-form {
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+}
+
+.create-form label, .update-form label {
+    padding: 5px 0;
+}
+
+.table-centered td {
+    padding: 0 10px;
+}
+
+.search-container, .search-container form {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.search-container form input {
+    margin-right: 10px;
+}
+
+.search-container form button {
+    width: 90px;
 }

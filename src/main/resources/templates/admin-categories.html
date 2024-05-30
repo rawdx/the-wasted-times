@@ -22,63 +22,105 @@
 					<h2>Category Management</h2>
 				</div>
 			</div>
+			<div class="row">
+				<div class="col admin-links">
+					<a th:href="@{/admin/users}">Users</a>
+					<a th:href="@{/admin/articles}">Articles</a>
+					<a th:href="@{/admin/roles}">Roles</a>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col data-container" style="align-items: center">
+					<table>
+						<thead>
+						<tr>
+							<th>ID</th>
+							<th>Name</th>
+							<th>Url</th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr class="table-row table-centered" th:each="category : ${categories}">
+							<td th:text="${category.id}"></td>
+							<td th:text="${category.name}"></td>
+							<td th:text="${category.url}"></td>
+							<td>
+								<div class="row">
+									<div class="col" style="text-align: end">
+										<button class="button profile-button" th:onclick="'toggleForm(\'updateForm-' + ${category.id} + '\');'">Edit</button>
+									</div>
+									<div class="col" style="text-align: start">
+										<button class="button profile-button" th:onclick="'toggleForm(\'deleteForm-' + ${category.id} + '\');'">Delete</button>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col">
+										<form class="update-form" th:action="@{/admin/categories/update}" th:id="'updateForm-' + ${category.id}"
+											  th:method="post" th:style="${'display: none;'}">
+											<input name="id" th:value="${category.id}" type="hidden" />
+
+											<label for="name">Name:
+												<input class="form-control" required id="name" name="name" th:value="${category.name}" type="text" />
+											</label>
+
+											<label for="url">Url:
+												<input class="form-control" required id="url" name="url" th:value="${category.url}" type="text" />
+											</label>
+
+											<button class="button profile-button" type="submit">Update</button>
+										</form>
+										<form class="delete-form" th:action="@{/admin/categories/delete}" th:id="'deleteForm-' + ${category.id}" th:method="post" th:style="'display: none;'">
+											<input name="id" th:value="${category.id}" type="hidden" />
+											<input class="form-control" type="text" th:id="'deleteInput-' + ${category.id}" style="width: auto; margin: 8px 0;" placeholder="Type 'DELETE' to confirm">
+											<button class="button profile-button" type="button" th:onclick="'confirmDelete(' + ${category.id} + ')'" id="deleteButton">Delete</button>
+										</form>
+									</div>
+								</div>
+							</td>
+						</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<div th:text="${errorMessage}" id="error" class="text-danger" style="text-align: center;
+    margin: 15px 0;"></div>
+					<div th:text="${successMessage}" id="success" class="text-success" style="text-align: center;
+    margin: 15px 0;"></div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col create-container">
+					<button class="button profile-button" style="margin: 5px" id="showCreateForm" onclick="toggleForm('createForm')">Create Category</button>
+					<form class="create-form" id="createForm" th:action="@{/admin/categories/create}" th:method="post" th:style="${'display: none;'}">
+						<label>Name:
+							<input class="form-control" name="name" required type="text" />
+						</label>
+
+						<label>Url:
+							<input class="form-control" name="url" required type="text">
+						</label>
+
+						<button class="button profile-button" type="submit">Create</button>
+					</form>
+				</div>
+			</div>
 		</div>
-
-		<a th:href="@{/admin/users}">show users</a>
-		<a th:href="@{/admin/articles}">show articles</a>
-
-		<button id="showCreateForm" onclick="toggleForm('createForm')">Create Category</button>
-
-		<form id="createForm" th:action="@{/admin/categories/create}" th:method="post" th:style="${'display: none;'}">
-			<h3>Create Category</h3>
-			<label>Name:
-				<input name="name" required type="text" />
-			</label>
-
-			<label>Url:
-				<input name="url" required type="text">
-			</label>
-
-			<button type="submit">Create</button>
-		</form>
-
-		<table>
-			<thead>
-			<tr>
-				<th>ID</th>
-				<th>Name</th>
-				<th>Url</th>
-			</tr>
-			</thead>
-			<tbody>
-			<tr th:each="category : ${categories}">
-				<td th:text="${category.id}"></td>
-				<td th:text="${category.name}"></td>
-				<td th:text="${category.url}"></td>
-				<td>
-					<form th:action="@{/admin/categories/update}" th:id="'updateForm-' + ${category.id}"
-						  th:method="post" th:style="${'display: none;'}">
-						<input name="id" th:value="${category.id}" type="hidden" />
-
-						<input name="name" th:value="${category.name}" type="text" />
-
-						<input name="url" th:value="${category.url}" type="text" />
-
-						<button type="submit">Update</button>
-					</form>
-
-					<button th:onclick="'toggleForm(\'updateForm-' + ${category.id} + '\');'">Edit</button>
-
-					<form th:action="@{/admin/categories/delete}" th:method="post">
-						<input name="id" th:value="${category.id}" type="hidden" />
-						<button type="submit">Delete</button>
-					</form>
-				</td>
-			</tr>
-			</tbody>
-		</table>
 	</div>
 </div>
+
+<script>
+	function confirmDelete(categoryId) {
+		var form = document.getElementById('deleteForm-' + categoryId);
+		var input = form.querySelector('#deleteInput-' + categoryId);
+		if (input.value === 'DELETE') {
+			form.submit(); // Envía el formulario
+		} else {
+			document.getElementById("error").innerText="You must type 'DELETE' to confirm.";
+		}
+	}
+</script>
 
 </body>
 

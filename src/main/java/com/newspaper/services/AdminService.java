@@ -27,4 +27,6 @@ public interface AdminService {
 	 * @return A paginated list of {@link ArticleDto}.
 	 */
 	Page<ArticleDto> getArticleDtosPage(Pageable pageable);
+
+    Page<UserDto> searchUsers(String query, Pageable pageable);
 }

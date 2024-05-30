@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.newspaper.services.PasswordChangeService;
 import com.newspaper.utils.Encryptor;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * Controller responsible for handling password change-related requests.
@@ -33,15 +34,18 @@ public class PasswordChangeController {
 	 * @return A redirect to the profile page ("/profile").
 	 */
 	@GetMapping("/initiate-password-change")
-	public String initiatePasswordChange(@RequestParam String email) {
+	public String initiatePasswordChange(RedirectAttributes redirectAttributes, @RequestParam String email) {
 		try {
 			if (passwordChangeService.initiatePasswordChange(email)) {
+				redirectAttributes.addFlashAttribute("successMessage", "Password change email sent successfully.");
 				logger.info("Password change initiated for user: {}", email);
             } else {
+				redirectAttributes.addFlashAttribute("errorMessage", "Failed to send the password change email.");
 				logger.warn("Password change failed for user: {}", email);
             }
             return "redirect:/profile";
         } catch (Exception e) {
+			redirectAttributes.addFlashAttribute("errorMessage", "An error occurred during the password change.");
 			logger.error("Error initiating password change for email: {}", email, e);
 			return "redirect:/profile";
 		}
@@ -73,18 +77,21 @@ public class PasswordChangeController {
 	 * @return A redirect to the profile page ("/profile").
 	 */
 	@PostMapping("/change-password")
-	public String changePassword(@RequestParam String token, @RequestParam String newPassword) {
+	public String changePassword(RedirectAttributes redirectAttributes, @RequestParam String token, @RequestParam String newPassword) {
 		try {
 			newPassword = Encryptor.encrypt(newPassword);
 			
 			if(passwordChangeService.changePassword(token, newPassword)) {
 				logger.info("Password change successful for token: {}", token);
+				redirectAttributes.addFlashAttribute("successMessage", "Password changed successfully.");
             } else {
 				logger.warn("Password change failed for token: {}", token);
+				redirectAttributes.addFlashAttribute("errorMessage", "Failed to change password.");
             }
             return "redirect:/profile";
         } catch (Exception e) {
 			logger.error("Error changing password for token: {}", token, e);
+			redirectAttributes.addFlashAttribute("errorMessage", "An unexpected error occurred. Please try again later.");
 			return "redirect:/profile";
 		}
 	}

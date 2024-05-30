@@ -5,6 +5,7 @@ import com.newspaper.entities.ArticleStatus;
 import com.newspaper.entities.Category;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * Data Transfer Object (DTO) representing an article.
@@ -23,6 +24,7 @@ public class ArticleDto {
     private ArticlePriority priority;
     private UserDto user;
     private Category category;
+    private List<CommentDto> comments;
 
     //Constructors
 
@@ -137,5 +139,13 @@ public class ArticleDto {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public List<CommentDto> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<CommentDto> comments) {
+        this.comments = comments;
     }
 }

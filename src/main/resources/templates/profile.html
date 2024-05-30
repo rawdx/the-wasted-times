@@ -47,21 +47,29 @@
             <div class="profile-actions">
                 <div class="container">
                     <div class="row">
+                        <div class="col">
+                            <div th:text="${errorMessage}" id="error" class="text-danger" style="text-align: center;
+    margin: 15px 0;"></div>
+                            <div th:text="${successMessage}" id="success" class="text-success" style="text-align: center;
+    margin: 15px 0;"></div>
+                        </div>
+                    </div>
+                    <div class="row">
                         <h3 class="profile-title">Settings</h3>
                     </div>
-                    <div class="row profile-setting" th:if="${#strings.equals(session.user.role, 'WRITER')}" style="padding: 9px 0 20px 0">
+                    <div class="row profile-setting" th:if="${#strings.equals(session.user.role.name, 'WRITER')}" style="padding: 9px 0 20px 0">
                         <div class="col">
                             <button class="profile-button" onclick="location.href='/write'">Write an article</button>
                         </div>
                     </div>
-                    <div class="row" th:if="${!(#strings.equals(session.user.role, 'ADMIN'))}" style="padding: 10px 0">
-                        <div class="col" th:if="${!(#strings.equals(session.user.role, 'ADMIN') or session.user.isVerified == true)}" style="padding-bottom: 10px; text-align: center">
+                    <div class="row" th:if="${!(#strings.equals(session.user.role.name, 'ADMIN'))}" style="padding: 10px 0">
+                        <div class="col" th:if="${!(#strings.equals(session.user.role.name, 'ADMIN') or session.user.isVerified == true)}" style="padding-bottom: 10px; text-align: center">
                                 <form th:action="@{/resend-verification}" th:method="get">
                                     <input th:name="email" th:value="${session.user.email}" type="hidden"/>
                                     <button class="profile-button" type="submit">Send Verification Email</button>
                                 </form>
                         </div>
-                        <div class="col" th:unless="${#strings.equals(session.user.role, 'ADMIN')}" style="text-align: center">
+                        <div class="col" th:unless="${#strings.equals(session.user.role.name, 'ADMIN')}" style="text-align: center">
                                 <form th:action="@{/initiate-password-change}" th:method="get">
                                     <input th:name="email" th:value="${session.user.email}" type="hidden"/>
 
@@ -69,7 +77,7 @@
                                 </form>
                         </div>
                     </div>
-                    <form method="post" th:action="@{/profile/edit/email}" th:unless="${#strings.equals(session.user.role, 'ADMIN')}">
+                    <form method="post" th:action="@{/profile/edit/email}" th:unless="${#strings.equals(session.user.role.name, 'ADMIN')}">
                     <div class="row profile-setting">
                         <div class="col">
                             <label for="email">Email:</label>
@@ -80,7 +88,7 @@
                         </div>
                     </div>
                     </form>
-                    <form method="post" th:action="@{/profile/edit/phone}" th:unless="${#strings.equals(session.user.role, 'ADMIN')}">
+                    <form method="post" th:action="@{/profile/edit/phone}" th:unless="${#strings.equals(session.user.role.name, 'ADMIN')}">
                         <div class="row profile-setting">
                             <div class="col">
                                 <label for="phoneNumber">Phone Number:</label>
@@ -91,7 +99,7 @@
                             </div>
                         </div>
                     </form>
-                    <form method="post" th:action="@{/profile/edit/name}"  th:unless="${#strings.equals(session.user.role, 'ADMIN') or #strings.equals(session.user.role, 'WRITER')}">
+                    <form method="post" th:action="@{/profile/edit/name}"  th:unless="${#strings.equals(session.user.role.name, 'ADMIN') or #strings.equals(session.user.role, 'WRITER')}">
                         <div class="row profile-setting">
                             <div class="col">
                                 <label for="firstName">First Name:</label>
@@ -106,7 +114,7 @@
                             </div>
                         </div>
                     </form>
-                    <form enctype="multipart/form-data" method="post" th:action="@{/profile/edit/picture}" th:unless="${#strings.equals(session.user.role, 'ADMIN')}">
+                    <form enctype="multipart/form-data" method="post" th:action="@{/profile/edit/picture}" th:unless="${#strings.equals(session.user.role.name, 'ADMIN')}">
                         <div class="row profile-setting" style="align-items: flex-end">
                             <div class="col col-md-8">
                                 <label for="profilePicture">Profile Picture:</label>
@@ -119,10 +127,11 @@
                     </form>
                     <div class="row profile-setting">
                         <div class="col" style="display: grid; justify-items: center;">
-                            <th:block th:if="${#strings.equals(session.user.role, 'ADMIN')}">
+                            <th:block th:if="${#strings.equals(session.user.role.name, 'ADMIN')}">
                                 <a th:href="@{/admin/users}">Manage Users</a>
                                 <a th:href="@{/admin/articles}">Manage Articles</a>
                                 <a th:href="@{/admin/categories}">Manage Categories</a>
+                                <a th:href="@{/admin/roles}">Manage Roles</a>
                             </th:block>
                         </div>
                     </div>
@@ -130,7 +139,7 @@
                         <div class="col" style="display: contents; padding: 25px" th:if="${session.user}">
                                 <a th:href="@{/logout}">Logout</a>
                         </div>
-                        <div class="col" style="padding-left: 30px"  th:unless="${#strings.equals(session.user.role, 'ADMIN')}">
+                        <div class="col" style="padding-left: 30px"  th:unless="${#strings.equals(session.user.role.name, 'ADMIN')}">
                             <a th:href="@{/profile/delete/confirm}">Delete My Account</a>
                         </div>
                     </div>

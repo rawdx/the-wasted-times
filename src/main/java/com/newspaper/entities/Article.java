@@ -50,7 +50,7 @@ public class Article {
     @JoinColumn(name = "category_id", foreignKey = @ForeignKey(name = "fk_article_category"))
     private Category category;
 
-    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "article", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;
 
     //Constructors

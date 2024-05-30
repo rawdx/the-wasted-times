@@ -50,4 +50,12 @@ public class AdminServiceImpl implements AdminService {
         Page<Article> articlePage = articleRepository.findAllWithUser(pageable);
         return articlePage.map(articleService::convertToArticleDto);
     }
+
+    @Override
+    public Page<UserDto> searchUsers(String query, Pageable pageable) {
+        pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("id"));
+
+        Page<User> userPage = userRepository.searchByEmailOrName(query, pageable);
+        return userPage.map(userService::convertToUserDto);
+    }
 }

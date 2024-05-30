@@ -56,8 +56,10 @@
                 </div>
             </div>
             </form>
-            <div th:text="${successMessage}"></div>
-
+            <div th:text="${errorMessage}" id="error" class="text-danger" style="text-align: center;
+    margin: 15px 0;"></div>
+            <div th:text="${successMessage}" id="success" class="text-success" style="text-align: center;
+    margin: 15px 0;"></div>
         </div>
     </div>
 </div>

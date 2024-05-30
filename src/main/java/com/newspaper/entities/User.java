@@ -37,16 +37,15 @@ public class User {
 	@Column(name = "is_verified")
 	private boolean isVerified;
 
-	@Column(name = "role", nullable = false, length = 20)
-	@Enumerated(EnumType.STRING)
-	private UserRole role;
-
 	@OneToMany(mappedBy = "user")
 	private List<Article> articles;
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Comment> comments;
 
+	@ManyToOne()
+	@JoinColumn(name = "role_id", foreignKey = @ForeignKey(name = "fk_user_role"))
+	private Role role;
 
 	// Constructors
 
@@ -111,17 +110,6 @@ public class User {
 		this.isVerified = isVerified;
 	}
 
-	public UserRole getRole() {
-		return role;
-	}
-
-	public void setRole(UserRole role) {
-		this.role = role;
-		if (UserRole.ADMIN.equals(role)) {
-			this.isVerified = true;
-		}
-	}
-
 	public List<Article> getArticles() {
 		return articles;
 	}
@@ -136,5 +124,16 @@ public class User {
 
 	public void setComments(List<Comment> comments) {
 		this.comments = comments;
+	}
+
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
+		if(role.getName().equals("ADMIN")){
+			this.isVerified = true;
+		}
 	}
 }

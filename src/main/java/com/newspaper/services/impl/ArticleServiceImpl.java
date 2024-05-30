@@ -2,10 +2,12 @@ package com.newspaper.services.impl;
 
 import com.newspaper.entities.*;
 import com.newspaper.entities.dtos.ArticleDto;
+import com.newspaper.entities.dtos.CommentDto;
 import com.newspaper.repositories.ArticleRepository;
 import com.newspaper.repositories.CategoryRepository;
 import com.newspaper.repositories.UserRepository;
 import com.newspaper.services.ArticleService;
+import com.newspaper.services.CommentService;
 import com.newspaper.services.UserService;
 import com.newspaper.utils.ImageUtils;
 import org.springframework.data.domain.Limit;
@@ -26,14 +28,16 @@ public class ArticleServiceImpl implements ArticleService {
 	private final UserRepository userRepository;
 	private final UserService userService;
 	private final CategoryRepository categoryRepository;
+	private final CommentService commentService;
 
 	public ArticleServiceImpl(ArticleRepository articleRepository, UserRepository userRepository,
-			UserService userService, CategoryRepository categoryRepository) {
+                              UserService userService, CategoryRepository categoryRepository, CommentService commentService) {
 		this.articleRepository = articleRepository;
 		this.userRepository = userRepository;
 		this.userService = userService;
 		this.categoryRepository = categoryRepository;
-	}
+        this.commentService = commentService;
+    }
 
 	@Override
 	public Article convertToArticleEntity(ArticleDto articleDto) {
@@ -64,6 +68,10 @@ public class ArticleServiceImpl implements ArticleService {
 		articleDto.setPriority(article.getPriority());
 		articleDto.setUser(userService.convertToUserDto(article.getUser()));
 		articleDto.setCategory(article.getCategory());
+		List<CommentDto> commentDtos = article.getComments().stream()
+				.map(commentService::convertToCommentDto)
+				.collect(Collectors.toList());
+		articleDto.setComments(commentDtos);
 
 		return articleDto;
 	}

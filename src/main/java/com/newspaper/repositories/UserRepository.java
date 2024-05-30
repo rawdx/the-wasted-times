@@ -1,8 +1,13 @@
 package com.newspaper.repositories;
 
+import com.newspaper.entities.Role;
 import com.newspaper.entities.User;
-import com.newspaper.entities.UserRole;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Range;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -36,5 +41,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * @param role The user role to count.
      * @return The count of users with the specified role.
      */
-	long countByRole(UserRole role);
+	long countByRole(Role role);
+
+    @Query("SELECT u FROM User u WHERE u.email LIKE %:query% OR u.name LIKE %:query%")
+    Page<User> searchByEmailOrName(@Param("query") String query, Pageable pageable);
 }

@@ -26,153 +26,187 @@
 					<h2>User Management</h2>
 				</div>
 			</div>
-		</div>
+			<div class="row">
+				<div class="col admin-links">
+					<a th:href="@{/admin/articles}">Articles</a>
+					<a th:href="@{/admin/categories}">Categories</a>
+					<a th:href="@{/admin/roles}">Roles</a>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col search-container" style="display: flex">
+					<form th:action="@{/admin/users/search}" method="get">
+						<input class="form-control" type="text" name="query" th:value="${searchQuery}" placeholder="Search users...">
+						<button class="button profile-button" type="submit">Search</button>
+					</form>
+				</div>
+				<div class="col">
+					<div th:text="${errorMessage}" id="error" class="text-danger" style="text-align: center;
+    margin: 10px 0;"></div>
+					<div th:text="${successMessage}" id="success" class="text-success" style="text-align: center;
+    margin: 10px 0;"></div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col data-container">
+					<table>
+						<thead>
+						<tr>
+							<th>ID</th>
+							<th>Picture</th>
+							<th>Email</th>
+							<th>Name</th>
+							<th>Phone</th>
+							<th>Role</th>
+							<th>Is Verified</th>
+							<th>Actions</th>
+						</tr>
+						</thead>
+						<tbody>
+						<!-- Loop through the list of users -->
+						<tr class="table-row" th:each="user : ${users}">
+							<td th:text="${user.id}"></td>
+							<td>
+								<img alt="Image" class="profile-image-admin" th:if="${user.profilePicture != null}"
+									 th:src="'data:image/png;base64, ' + ${user.profilePicture}" />
+								<img alt="Default Image" class="profile-image-admin" src="/img/default-picture.png"
+									 th:unless="${user.profilePicture != null}" />
+							</td>
+							<td th:text="${user.email}"></td>
+							<td th:text="${user.name}"></td>
+							<td th:text="${user.phoneNumber}"></td>
+							<td th:text="${user.role.name}"></td>
+							<td th:text="${user.isVerified}"></td>
+							<td>
+								<div class="row">
+									<div class="col" style="text-align: end">
+										<button class="button profile-button" th:onclick="'toggleForm(\'updateForm-' + ${user.id} + '\');'">Edit</button>
+									</div>
+									<div class="col" style="text-align: start">
+											<button class="button profile-button" th:onclick="'toggleForm(\'deleteForm-' + ${user.id} + '\');'">Delete</button>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col">
+										<form class="update-form" th:action="@{/admin/users/update}" th:id="'updateForm-' + ${user.id}" th:method="post"
+											  th:style="${'display: none;'}">
 
-		<a th:href="@{/admin/articles}">show articles</a>
-		<a th:href="@{/admin/categories}">show Categories</a>
+											<input name="email" th:value="${user.email}" type="hidden" />
 
-		<!-- Button to toggle the visibility of the create user form -->
-		<button id="showCreateForm" onclick="toggleForm('createForm')">Create User</button>
+											<label for="role">Role:
+												<select class="form-control" name="role" id="role">
+													<option th:each="role : ${roles}" th:value="${role.name}" th:text="${role.name}"
+															th:selected="${#strings.equals(role.name, user.role?.name)}">
+													</option>
+												</select>
+											</label>
 
-		<!-- Create User Form (Initially Hidden) -->
-		<form enctype="multipart/form-data" id="createForm" th:action="@{/admin/users/create}" th:method="post"
-			  th:style="${'display: none;'}">
-			<h3>Create User</h3>
-			<label>Email:
-				<input name="email" required type="text" />
-			</label>
+											<label>
+												Verify:
+												<input class="form-check-input" name="isVerified" th:checked="${user.isVerified}" type="checkbox" />
+											</label>
 
-			<label>Password:
-				<input name="password" required type="password">
-			</label>
-
-			<label>First Name:
-				<input name="firstName" type="text">
-			</label>
-
-			<label>Last Name:
-				<input name="lastName" type="text">
-			</label>
-
-			<label>Phone Number:
-				<input name="phoneNumber" type="text" />
-			</label>
-
-			<label for="profilePicture">Profile Picture:
-				<input accept="image/*" id="profilePicture" name="profilePicture" type="file"><br>
-			</label>
-
-			<label>Role:
-				<select name="role">
-					<option value="USER">User</option>
-					<option value="ADMIN">Admin</option>
-					<option value="WRITER">Writer</option>
-					<option value="SUBSCRIBER">Subscriber</option>
-				</select>
-			</label>
-
-			<label>
-				Verify:
-				<input name="isVerified" type="checkbox" />
-			</label>
-
-			<button type="submit">Create</button>
-		</form>
-
-		<table>
-			<thead>
-			<tr>
-				<th>ID</th>
-				<th>Picture</th>
-				<th>Email</th>
-				<th>Name</th>
-				<th>Phone</th>
-				<th>Role</th>
-				<th>Is Verified</th>
-				<th>Actions</th>
-			</tr>
-			</thead>
-			<tbody>
-			<!-- Loop through the list of users -->
-			<tr th:each="user : ${users}">
-				<td th:text="${user.id}"></td>
-				<td>
-					<img alt="Image" class="profile-image-admin" th:if="${user.profilePicture != null}"
-						 th:src="'data:image/png;base64, ' + ${user.profilePicture}" />
-					<img alt="Default Image" class="profile-image-admin" src="/img/default-picture.png"
-						 th:unless="${user.profilePicture != null}" />
-				</td>
-				<td th:text="${user.email}"></td>
-				<td th:text="${user.name}"></td>
-				<td th:text="${user.phoneNumber}"></td>
-				<td th:text="${user.role}"></td>
-				<td th:text="${user.isVerified}"></td>
-				<td>
-					<!-- Display user information -->
-					<form th:action="@{/admin/users/update}" th:id="'updateForm-' + ${user.id}" th:method="post"
+											<button class="button profile-button" type="submit">Update</button>
+										</form>
+										<form class="delete-form" th:action="@{/admin/users/delete}" th:id="'deleteForm-' + ${user.id}" th:method="post" th:style="'display: none;'">
+											<input name="email" th:value="${user.email}" type="hidden" />
+											<input class="form-control" type="text" th:id="'deleteInput-' + ${user.id}" style="width: auto; margin: 8px 0;" placeholder="Type 'DELETE' to confirm">
+											<button class="button profile-button" type="button" th:onclick="'confirmDelete(' + ${user.id} + ')'" id="deleteButton">Delete</button>
+										</form>
+									</div>
+								</div>
+							</td>
+						</tr>
+						</tbody>
+					</table>
+					<!-- Pagination controls -->
+					<div class="pagination-container" th:if="${totalPages > 1}">
+						<ul class="pagination">
+							<li th:class="${currentPage == 1 ? 'disabled' : ''}">
+								<a aria-label="First" th:href="@{/admin/users(page=1)}">
+									<span aria-hidden="true">&laquo;&laquo;</span>
+								</a>
+							</li>
+							<li th:each="pageNumber : ${#numbers.sequence(currentPage - 1, currentPage + 1)}"
+								th:if="${pageNumber >= 1 and pageNumber <= totalPages}">
+								<span th:if="${pageNumber == currentPage}" th:text="${pageNumber}"></span>
+								<a th:href="@{/admin/users(page=${pageNumber})}" th:text="${pageNumber}"
+								   th:unless="${pageNumber == currentPage}"></a>
+							</li>
+							<li th:class="${currentPage == totalPages ? 'disabled' : ''}">
+								<a aria-label="Last" th:href="@{/admin/users(page=${totalPages})}">
+									<span aria-hidden="true">&raquo;&raquo;</span>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col create-container">
+					<!-- Button to toggle the visibility of the create user form -->
+					<button class="button profile-button" id="showCreateForm" onclick="toggleForm('createForm')" style="margin: 5px;">Create User</button>
+					<form class="create-form" enctype="multipart/form-data" id="createForm" th:action="@{/admin/users/create}" th:method="post"
 						  th:style="${'display: none;'}">
+<!--						<h3>Create User</h3>-->
+						<label>Email:*
+							<input class="form-control" name="email" required type="text" />
+						</label>
 
-						<input name="email" th:value="${user.email}" type="hidden" />
+						<label>Password:*
+							<input class="form-control" name="password" required type="password">
+						</label>
 
-						<!-- Dropdown to select user role -->
-						<label>
-							<select name="role">
-								<option th:selected="${#strings.equals(user.role, 'USER')}" value="USER">User</option>
-								<option th:selected="${#strings.equals(user.role, 'ADMIN')}" value="ADMIN">Admin
-								</option>
-								<option th:selected="${#strings.equals(user.role, 'WRITER')}" value="WRITER">Writer
-								</option>
-								<option th:selected="${#strings.equals(user.role, 'SUBSCRIBER')}" value="SUBSCRIBER">
-									Subscriber
-								</option>
+						<label>First Name:
+							<input class="form-control" name="firstName" type="text">
+						</label>
+
+						<label>Last Name:
+							<input class="form-control" name="lastName" type="text">
+						</label>
+
+						<label>Phone Number:
+							<input class="form-control" name="phoneNumber" type="text" />
+						</label>
+
+						<label>Role:
+							<select class="form-control" name="role">
+								<tr th:each="role : ${roles}">
+									<option th:value="${role.name}" th:text="${role.name}"></option>
+								</tr>
 							</select>
 						</label>
 
 						<label>
 							Verify:
-							<input name="isVerified" th:checked="${user.isVerified}" type="checkbox" />
+							<input class="form-check-input" name="isVerified" type="checkbox" />
 						</label>
 
-						<button type="submit">Update</button>
+						<label for="profilePicture">Profile Picture:
+							<input class="form-control" accept="image/*" id="profilePicture" name="profilePicture" type="file"><br>
+						</label>
+
+						<button class="button profile-button" type="submit">Create</button>
 					</form>
-
-					<!-- Button to toggle the visibility of the update form -->
-					<button th:onclick="'toggleForm(\'updateForm-' + ${user.id} + '\');'">Edit</button>
-
-					<!-- Form to delete user -->
-					<form th:action="@{/admin/users/delete}" th:method="post">
-						<input name="email" th:value="${user.email}" type="hidden" />
-						<button type="submit">Delete</button>
-					</form>
-				</td>
-			</tr>
-			</tbody>
-		</table>
-
-		<!-- Pagination controls -->
-		<div th:if="${totalPages > 1}">
-			<ul class="pagination">
-				<li th:class="${currentPage == 1 ? 'disabled' : ''}">
-					<a aria-label="First" th:href="@{/admin/users(page=1)}">
-						<span aria-hidden="true">&laquo;&laquo;</span>
-					</a>
-				</li>
-				<li th:each="pageNumber : ${#numbers.sequence(currentPage - 1, currentPage + 1)}"
-					th:if="${pageNumber >= 1 and pageNumber <= totalPages}">
-					<span th:if="${pageNumber == currentPage}" th:text="${pageNumber}"></span>
-					<a th:href="@{/admin/users(page=${pageNumber})}" th:text="${pageNumber}"
-					   th:unless="${pageNumber == currentPage}"></a>
-				</li>
-				<li th:class="${currentPage == totalPages ? 'disabled' : ''}">
-					<a aria-label="Last" th:href="@{/admin/users(page=${totalPages})}">
-						<span aria-hidden="true">&raquo;&raquo;</span>
-					</a>
-				</li>
-			</ul>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
 
+<script>
+	function confirmDelete(userId) {
+		var form = document.getElementById('deleteForm-' + userId);
+		var input = form.querySelector('#deleteInput-' + userId);
+		if (input.value === 'DELETE') {
+			form.submit(); // Envía el formulario
+		} else {
+			document.getElementById("error").innerText="You must type 'DELETE' to confirm.";
+		}
+	}
+</script>
+
 </body>
+
 
 </html>

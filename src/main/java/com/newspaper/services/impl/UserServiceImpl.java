@@ -1,11 +1,13 @@
 package com.newspaper.services.impl;
 
+import com.newspaper.entities.Role;
 import com.newspaper.entities.Token;
 import com.newspaper.entities.User;
-import com.newspaper.entities.UserRole;
+import com.newspaper.entities.dtos.RoleDto;
 import com.newspaper.entities.dtos.UserDto;
 import com.newspaper.repositories.TokenRepository;
 import com.newspaper.repositories.UserRepository;
+import com.newspaper.services.RoleService;
 import com.newspaper.services.UserService;
 import com.newspaper.services.VerificationService;
 import com.newspaper.utils.ImageUtils;
@@ -29,11 +31,13 @@ public class UserServiceImpl implements UserService {
 	private final UserRepository userRepository;
 	private final TokenRepository tokenRepository;
 	private final VerificationService verificationService;
+	private final RoleService roleService;
 
-	public UserServiceImpl(UserRepository userRepository, TokenRepository tokenRepository, VerificationService verificationService) {
+	public UserServiceImpl(UserRepository userRepository, TokenRepository tokenRepository, VerificationService verificationService, RoleService roleService) {
 		this.userRepository = userRepository;
 		this.tokenRepository = tokenRepository;
         this.verificationService = verificationService;
+        this.roleService = roleService;
     }
 
 	@Override
@@ -46,7 +50,7 @@ public class UserServiceImpl implements UserService {
 		user.setPhoneNumber(userDto.getPhoneNumber());
 		user.setProfilePicture(ImageUtils.convertToByteArray(userDto.getProfilePicture()));
 		user.setVerified(userDto.isVerified());
-		user.setRole(userDto.getRole());
+		user.setRole(roleService.convertToRoleEntity(userDto.getRole()));
 
 		return user;
 	}
@@ -61,7 +65,7 @@ public class UserServiceImpl implements UserService {
 		userDto.setPhoneNumber(user.getPhoneNumber());
 		userDto.setProfilePicture(ImageUtils.convertToBase64(user.getProfilePicture()));
 		userDto.setVerified(user.isVerified());
-		userDto.setRole(user.getRole());
+		userDto.setRole(roleService.convertToRoleDto(user.getRole()));
 
 		return userDto;
 	}
@@ -72,12 +76,13 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public boolean updateUser(String email, boolean isVerified, UserRole role) {
+	public boolean updateUser(String email, boolean isVerified, RoleDto roleDto) {
 		Optional<User> optionalUser = userRepository.findByEmail(email);
 		
 		if (optionalUser.isPresent()) {
 			User user = optionalUser.get();
 
+			Role role = roleService.convertToRoleEntity(roleDto);
 			user.setVerified(isVerified);
 			user.setRole(role);
 			
@@ -96,12 +101,13 @@ public class UserServiceImpl implements UserService {
 
 		if (optionalUser.isPresent()) {
 			User user = optionalUser.get();
+			RoleDto role = roleService.getRoleByName("ADMIN");
 
 			// Check if the user being deleted is an admin
-			boolean isUserAdmin = user.getRole() == UserRole.ADMIN;
+			boolean isUserAdmin = user.getRole().getId() == role.getId();
 
 			// Check the count of remaining admin users
-			long remainingAdminCount = userRepository.countByRole(UserRole.ADMIN);
+			long remainingAdminCount = userRepository.countByRole(roleService.convertToRoleEntity(role));
 
 			if (isUserAdmin && remainingAdminCount == 1) {
 				logger.warn("Attempted to delete the last remaining admin: {}. User deletion aborted.", email);

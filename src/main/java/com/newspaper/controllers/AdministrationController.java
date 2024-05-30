@@ -7,8 +7,8 @@ import com.newspaper.entities.ArticlePriority;
 import com.newspaper.entities.ArticleStatus;
 import com.newspaper.entities.dtos.ArticleDto;
 import com.newspaper.entities.dtos.CategoryDto;
-import com.newspaper.services.ArticleService;
-import com.newspaper.services.CategoryService;
+import com.newspaper.entities.dtos.RoleDto;
+import com.newspaper.services.*;
 import com.newspaper.utils.ImageUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,15 +21,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.newspaper.entities.UserRole;
 import com.newspaper.entities.dtos.UserDto;
-import com.newspaper.services.AdminService;
-import com.newspaper.services.RegistrationService;
-import com.newspaper.services.UserService;
 import com.newspaper.utils.Encryptor;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * Controller for handling admin-related operations.
@@ -45,15 +42,17 @@ public class AdministrationController {
 	private final RegistrationService registrationService;
 	private final ArticleService articleService;
 	private final CategoryService categoryService;
+	private final RoleService roleService;
 
 	public AdministrationController(AdminService adminService, UserService userService,
-			RegistrationService registrationService, ArticleService articleService, CategoryService categoryService) {
+                                    RegistrationService registrationService, ArticleService articleService, CategoryService categoryService, RoleService roleService) {
 		this.adminService = adminService;
 		this.userService = userService;
 		this.registrationService = registrationService;
 		this.articleService = articleService;
 		this.categoryService = categoryService;
-	}
+        this.roleService = roleService;
+    }
 
 	/**
 	 * Displays the admin users page.
@@ -85,6 +84,9 @@ public class AdministrationController {
 			List<CategoryDto> categories = categoryService.getAllCategories();
 			model.addAttribute("categories", categories);
 
+			List<RoleDto> roles = roleService.getAllRoles();
+			model.addAttribute("roles", roles);
+
 			return "admin-users";
 		} catch (Exception e) {
 			logger.error("Error while attempting to access admin users page.", e);
@@ -92,6 +94,39 @@ public class AdministrationController {
 		}
 	}
 
+	@GetMapping("/users/search")
+	public String searchUsers(HttpSession session, Model model,
+							  @RequestParam(name = "query") String query,
+							  @RequestParam(name = "page", defaultValue = "1") int page) {
+		try {
+			if (isUserAdmin(session)) {
+				logger.warn("Non-admin user attempted to access admin users page.");
+				return "redirect:/";
+			}
+
+			int pageSize = 10;
+			Page<UserDto> userPage = adminService.searchUsers(query, PageRequest.of(page - 1, pageSize));
+
+			int totalPages = userPage.getTotalPages();
+			List<UserDto> users = userPage.getContent();
+
+			model.addAttribute("users", users);
+			model.addAttribute("totalPages", totalPages);
+			model.addAttribute("currentPage", page);
+			model.addAttribute("searchQuery", query);
+
+			List<CategoryDto> categories = categoryService.getAllCategories();
+			model.addAttribute("categories", categories);
+
+			List<RoleDto> roles = roleService.getAllRoles();
+			model.addAttribute("roles", roles);
+
+			return "admin-users";
+		} catch (Exception e) {
+			logger.error("Error while attempting to search users.", e);
+			return "redirect:/";
+		}
+	}
 	/**
 	 * Handles the creation of a new user by an admin.
 	 *
@@ -107,10 +142,10 @@ public class AdministrationController {
 	 * @return A redirect to the admin users page.
 	 */
 	@PostMapping("/users/create")
-	public String createUser(HttpSession session, @RequestParam String email, @RequestParam String password,
-			@RequestParam String firstName, @RequestParam String lastName, @RequestParam String phoneNumber,
-			@RequestParam("profilePicture") MultipartFile file,
-			@RequestParam(required = false, defaultValue = "false") boolean isVerified, @RequestParam UserRole role) {
+	public String createUser(RedirectAttributes redirectAttributes, HttpSession session, @RequestParam String email, @RequestParam String password,
+							 @RequestParam String firstName, @RequestParam String lastName, @RequestParam String phoneNumber,
+							 @RequestParam("profilePicture") MultipartFile file,
+							 @RequestParam(required = false, defaultValue = "false") boolean isVerified, @RequestParam RoleDto role) {
 		try {
 			password = Encryptor.encrypt(password);
 
@@ -124,13 +159,16 @@ public class AdministrationController {
 
 			if (registrationService.registerUser(userDto)) {
 				logger.info("User {} created successfully by {} - Name: {}, Phone: {}, Role: {}", email,
-						admin.getEmail(), name, phone, role);
+						admin.getEmail(), name, phone, role.getName());
+				redirectAttributes.addFlashAttribute("successMessage", "User created successfully.");
 			} else {
 				logger.warn("User creation by {} failed for email: {}", admin.getEmail(), email);
+				redirectAttributes.addFlashAttribute("errorMessage", "User creation failed for email: " + email);
 			}
 			return "redirect:/admin/users";
 		} catch (Exception e) {
 			logger.error("Error creating user: {}", email, e);
+			redirectAttributes.addFlashAttribute("errorMessage", "Error creating user: " + email);
 			return "redirect:/admin/users";
 		}
 	}
@@ -145,25 +183,30 @@ public class AdministrationController {
 	 * @return A redirect to the admin users page.
 	 */
 	@PostMapping("/users/update")
-	public String updateUser(HttpSession session, @RequestParam String email,
-			@RequestParam(required = false, defaultValue = "false") boolean isVerified, @RequestParam String role) {
+	public String updateUser(RedirectAttributes redirectAttributes, HttpSession session, @RequestParam String email,
+			@RequestParam(required = false, defaultValue = "false") boolean isVerified, @RequestParam RoleDto role) {
 		try {
 			UserDto admin = (UserDto) session.getAttribute("user");
 
 			if (!admin.getEmail().equals(email)) {
 
-				if (userService.updateUser(email, isVerified, UserRole.valueOf(role))) {
+				if (userService.updateUser(email, isVerified, role)) {
 					logger.info("User {} updated successfully by {} - Role: {}, Verified: {}", email, admin.getEmail(),
-							role, isVerified);
+							role.getName(), isVerified);
+					redirectAttributes.addFlashAttribute("successMessage", "User updated successfully.");
 				} else {
 					logger.warn("User update failed for {} by {}.", email, admin.getEmail());
+					redirectAttributes.addFlashAttribute("errorMessage", "User update failed for email: " + email);
+
 				}
 			} else {
 				logger.warn("User {} attempted to update themselves.", email);
+				redirectAttributes.addFlashAttribute("errorMessage", "You cannot update your own account.");
 			}
 			return "redirect:/admin/users";
 		} catch (Exception e) {
 			logger.error("Error updating user: {}", email, e);
+			redirectAttributes.addFlashAttribute("errorMessage", "Error updating user: " + email);
 			return "redirect:/admin/users";
 		}
 	}
@@ -176,22 +219,26 @@ public class AdministrationController {
 	 * @return A redirect to the admin users page.
 	 */
 	@PostMapping("/users/delete")
-	public String deleteUser(HttpSession session, @RequestParam String email) {
+	public String deleteUser(RedirectAttributes redirectAttributes, HttpSession session, @RequestParam String email) {
 		try {
 			UserDto admin = (UserDto) session.getAttribute("user");
 
 			if (!admin.getEmail().equals(email)) {
 				if (userService.deleteUser(email)) {
 					logger.info("User {} deleted successfully by {}.", email, admin.getEmail());
+					redirectAttributes.addFlashAttribute("successMessage", "User deleted successfully.");
 				} else {
 					logger.warn("User deletion failed for {} by {}.", email, admin.getEmail());
+					redirectAttributes.addFlashAttribute("errorMessage", "User deletion failed for email: " + email);
 				}
 			} else {
 				logger.warn("User {} attempted to delete themselves.", email);
+				redirectAttributes.addFlashAttribute("errorMessage", "You cannot delete your own account.");
 			}
 			return "redirect:/admin/users";
 		} catch (Exception e) {
 			logger.error("Error deleting user: {}", email, e);
+			redirectAttributes.addFlashAttribute("errorMessage", "Error deleting user: " + email);
 			return "redirect:/admin/users";
 		}
 	}
@@ -244,7 +291,7 @@ public class AdministrationController {
 	 * @return A redirect to the admin articles page.
 	 */
 	@PostMapping("/articles/update")
-	public String updateArticle(HttpSession session, @RequestParam long id, @RequestParam String status,
+	public String updateArticle(RedirectAttributes redirectAttributes, HttpSession session, @RequestParam long id, @RequestParam String status,
 			@RequestParam String priority, @RequestParam long categoryId) {
 		try {
 			UserDto admin = (UserDto) session.getAttribute("user");
@@ -254,13 +301,16 @@ public class AdministrationController {
 				logger.info(
 						"Article with ID '{}' updated successfully by {}. Status: {}, Priority: {}, Category ID: {}",
 						id, admin.getEmail(), status, priority, categoryId);
+				redirectAttributes.addFlashAttribute("successMessage", "Article updated successfully.");
 			} else {
 				logger.warn("Failed to update article with ID {}. Updated by {}. Status: {}, Priority: {}", id,
 						admin.getEmail(), status, priority);
+				redirectAttributes.addFlashAttribute("errorMessage", "Failed to update article.");
 			}
 			return "redirect:/admin/articles";
 		} catch (Exception e) {
 			logger.error("Error updating article with ID: {}", id, e);
+			redirectAttributes.addFlashAttribute("errorMessage", "Error updating article.");
 			return "redirect:/admin/articles";
 		}
 	}
@@ -273,18 +323,21 @@ public class AdministrationController {
 	 * @return A redirect to the admin articles page.
 	 */
 	@PostMapping("/articles/delete")
-	public String deleteArticle(HttpSession session, @RequestParam long id) {
+	public String deleteArticle(RedirectAttributes redirectAttributes, HttpSession session, @RequestParam long id) {
 		try {
 			UserDto admin = (UserDto) session.getAttribute("user");
 
 			if (articleService.deleteArticle(id)) {
 				logger.info("Article deleted successfully by {}.", admin.getEmail());
+				redirectAttributes.addFlashAttribute("successMessage", "Article deleted successfully.");
 			} else {
 				logger.warn("Failed to delete article by {}.", admin.getEmail());
+				redirectAttributes.addFlashAttribute("errorMessage", "Failed to delete article.");
 			}
 			return "redirect:/admin/articles";
 		} catch (Exception e) {
 			logger.error("Error deleting article.", e);
+			redirectAttributes.addFlashAttribute("errorMessage", "Error deleting article.");
 			return "redirect:/admin/articles";
 		}
 	}
@@ -324,7 +377,7 @@ public class AdministrationController {
 	 * @return A redirect to the admin categories page.
 	 */
 	@PostMapping("/categories/create")
-	public String createCategory(HttpSession session, @RequestParam String name, @RequestParam String url) {
+	public String createCategory(RedirectAttributes redirectAttributes, HttpSession session, @RequestParam String name, @RequestParam String url) {
 		try {
 			UserDto admin = (UserDto) session.getAttribute("user");
 
@@ -332,12 +385,15 @@ public class AdministrationController {
 
 			if (categoryService.createCategory(categoryDto)) {
 				logger.info("Category created successfully by {} - Name: {}, Url: {}", admin.getEmail(), name, url);
+				redirectAttributes.addFlashAttribute("successMessage", "Category created successfully.");
 			} else {
 				logger.warn("Failed to create category by {} - Name: {}, Url: {}", admin.getEmail(), name, url);
+				redirectAttributes.addFlashAttribute("errorMessage", "Failed to create category.");
 			}
 			return "redirect:/admin/categories";
 		} catch (Exception e) {
 			logger.error("Error creating category - Name: {}, Url: {}", name, url, e);
+			redirectAttributes.addFlashAttribute("errorMessage", "Error creating category.");
 			return "redirect:/admin/categories";
 		}
 	}
@@ -352,7 +408,7 @@ public class AdministrationController {
 	 * @return A redirect to the admin categories page.
 	 */
 	@PostMapping("/categories/update")
-	public String updateCategory(HttpSession session, @RequestParam long id, @RequestParam String name,
+	public String updateCategory(RedirectAttributes redirectAttributes, HttpSession session, @RequestParam long id, @RequestParam String name,
 			@RequestParam String url) {
 		try {
 			UserDto admin = (UserDto) session.getAttribute("user");
@@ -360,13 +416,17 @@ public class AdministrationController {
 			if (categoryService.updateCategory(id, name, url)) {
 				logger.info("Category with ID '{}' updated successfully by {}. Name: {}, Url: {}", id,
 						admin.getEmail(), name, url);
+				redirectAttributes.addFlashAttribute("successMessage", "Category updated successfully.");
+
 			} else {
 				logger.warn("Failed to update category with ID {}. Updated by {}. Name: {}, Url: {}", id,
 						admin.getEmail(), name, url);
+				redirectAttributes.addFlashAttribute("errorMessage", "Failed to update category.");
 			}
 			return "redirect:/admin/categories";
 		} catch (Exception e) {
 			logger.error("Error updating category with ID: {}", id, e);
+			redirectAttributes.addFlashAttribute("errorMessage", "Error updating category.");
 			return "redirect:/admin/categories";
 		}
 	}
@@ -379,21 +439,68 @@ public class AdministrationController {
 	 * @return A redirect to the admin categories page.
 	 */
 	@PostMapping("/categories/delete")
-	public String deleteCategory(HttpSession session, @RequestParam long id) {
+	public String deleteCategory(RedirectAttributes redirectAttributes, HttpSession session, @RequestParam long id) {
 		try {
 			UserDto admin = (UserDto) session.getAttribute("user");
 
 			if (categoryService.deleteCategory(id)) {
 				logger.info("Category deleted successfully by {}.", admin.getEmail());
+				redirectAttributes.addFlashAttribute("successMessage", "Category deleted successfully.");
 			} else {
 				logger.warn("Failed to delete category by {}.", admin.getEmail());
+				redirectAttributes.addFlashAttribute("errorMessage", "Failed to delete category.");
 			}
 			return "redirect:/admin/categories";
 		} catch (Exception e) {
 			logger.error("Error deleting category.", e);
+			redirectAttributes.addFlashAttribute("errorMessage", "Error deleting category.");
 			return "redirect:/admin/categories";
 		}
 	}
+
+	@GetMapping("/roles")
+	public String showRoles(HttpSession session, Model model) {
+		try {
+			if (isUserAdmin(session)) {
+				logger.warn("Non-admin user attempted to access admin roles page.");
+				return "redirect:/";
+			}
+
+			List<RoleDto> roles = roleService.getAllRoles();
+			model.addAttribute("roles", roles);
+
+			List<CategoryDto> categories = categoryService.getAllCategories();
+			model.addAttribute("categories", categories);
+
+			return "admin-roles";
+		} catch (Exception e) {
+			logger.error("Error while attempting to access admin roles page.", e);
+			return "redirect:/";
+		}
+
+	}
+
+//	@PostMapping("/roles/create")
+//	public String createRole(RedirectAttributes redirectAttributes, HttpSession session, @RequestParam String name) {
+//		try {
+//			UserDto admin = (UserDto) session.getAttribute("user");
+//
+//			RoleDto roleDto = new RoleDto(name);
+//
+//			if (roleService.createRole(roleDto)) {
+//				logger.info("Role created successfully by {} - Name: {}", admin.getEmail(), name);
+//				redirectAttributes.addFlashAttribute("successMessage", "Role created successfully.");
+//			} else {
+//				logger.warn("Failed to create role by {} - Name: {}", admin.getEmail(), name);
+//				redirectAttributes.addFlashAttribute("errorMessage", "Failed to create role.");
+//			}
+//			return "redirect:/admin/roles";
+//		} catch (Exception e) {
+//			logger.error("Error creating category - Name: {}", name, e);
+//			redirectAttributes.addFlashAttribute("errorMessage", "Error creating role.");
+//			return "redirect:/admin/roles";
+//		}
+//	}
 
 	/**
 	 * Checks if the logged-in user is an admin.
@@ -403,6 +510,8 @@ public class AdministrationController {
 	 */
 	private boolean isUserAdmin(HttpSession session) {
 		UserDto user = (UserDto) session.getAttribute("user");
-		return user == null || user.getRole() != UserRole.ADMIN;
+        RoleDto role = roleService.getRoleByName("ADMIN");
+
+		return user == null || user.getRole().getId() != role.getId();
 	}
 }

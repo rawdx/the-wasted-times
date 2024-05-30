@@ -17,6 +17,7 @@
         <div th:replace="~{fragments/header :: div}"></div>
         <div class="home-page home-page--modular">
             <div class="pc-display-flex pc-flexDirection-column pc-reset frontend-main-home-ModularHome-module__container--u5zRH">
+                <div th:text="${errorMessage}" id="error" class="text-danger" style="text-align: center; height: 35px"></div>
                 <div class="pc-display-flex pc-flexDirection-column pc-gap-44 pc-paddingTop-0 pc-reset">
                     <div>
                         <div class="frontend-main-home-Layout-module__container--GJ6Wt frontend-main-home-Layout-module__full-width--ziPTp">
@@ -53,30 +54,30 @@
                                         <div class="pc-display-flex pc-flexDirection-column pc-paddingTop-20 pc-reset">
                                             <div class="pc-display-flex pc-flexDirection-column pc-reset frontend-main-home-PostPreview-index-module__actions--eae29">
                                                 <div class="post-ufi style-compressed highlight">
-                                                    <div class="like-button-container post-ufi-button style-compressed">
-                                                        <a class="post-ufi-button style-compressed has-label with-border"
-                                                           role="button">
-                                                            <svg class="icon" fill="#000000" height="16" role="img"
-                                                                 stroke="#000" stroke-width="2"
-                                                                 style="height: 16px; width: 16px;"
-                                                                 viewBox="0 0 24 24" width="16"
-                                                                 xmlns="http://www.w3.org/2000/svg">
-                                                                <g>
-                                                                    <svg class="lucide lucide-heart " height="24"
-                                                                         stroke-linecap="round"
-                                                                         stroke-linejoin="round" stroke-width="2"
-                                                                         viewBox="0 0 24 24" width="24"
-                                                                         xmlns="http://www.w3.org/2000/svg">
-                                                                        <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z">
-                                                                        </path>
-                                                                    </svg>
-                                                                </g>
-                                                            </svg>
-                                                            <div class="label">14</div>
-                                                        </a>
-                                                    </div>
+<!--                                                    <div class="like-button-container post-ufi-button style-compressed">-->
+<!--                                                        <a class="post-ufi-button style-compressed has-label with-border"-->
+<!--                                                           role="button">-->
+<!--                                                            <svg class="icon" fill="#000000" height="16" role="img"-->
+<!--                                                                 stroke="#000" stroke-width="2"-->
+<!--                                                                 style="height: 16px; width: 16px;"-->
+<!--                                                                 viewBox="0 0 24 24" width="16"-->
+<!--                                                                 xmlns="http://www.w3.org/2000/svg">-->
+<!--                                                                <g>-->
+<!--                                                                    <svg class="lucide lucide-heart " height="24"-->
+<!--                                                                         stroke-linecap="round"-->
+<!--                                                                         stroke-linejoin="round" stroke-width="2"-->
+<!--                                                                         viewBox="0 0 24 24" width="24"-->
+<!--                                                                         xmlns="http://www.w3.org/2000/svg">-->
+<!--                                                                        <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z">-->
+<!--                                                                        </path>-->
+<!--                                                                    </svg>-->
+<!--                                                                </g>-->
+<!--                                                            </svg>-->
+<!--                                                            <div class="label">14</div>-->
+<!--                                                        </a>-->
+<!--                                                    </div>-->
                                                     <a class="post-ufi-button style-compressed post-ufi-comment-button no-label with-border"
-                                                       href="#" role="button">
+                                                       th:href="@{'/article/' + ${highlightedArticle.id}}" role="button">
                                                         <svg class="icon" fill="#000000" height="16" role="img"
                                                              stroke="#000" stroke-width="2"
                                                              style="height: 16px; width: 16px;" viewBox="0 0 24 24"
@@ -92,10 +93,11 @@
                                                                     </path>
                                                                 </svg>
                                                             </g>
+                                                            <div class="label" th:text="${#lists.size(highlightedArticle.comments)}"></div>
                                                         </svg>
                                                     </a><a
-                                                        class="post-ufi-button style-compressed no-label with-border"
-                                                        href="javascript:void(0)" role="button">
+                                                        class="post-ufi-button style-compressed no-label with-border download-link"
+                                                        th:href="@{'/article/' + ${highlightedArticle.id} + '/pdf'}" role="button">
                                                     <svg class="icon" fill="none" height="16"
                                                          stroke="currentColor" stroke-linecap="round"
                                                          stroke-linejoin="round" stroke-width="2"
@@ -122,10 +124,9 @@
                                     <div class="pc-reset frontend-pencraft-Text-module__color-pub-primary-text--RzL7j frontend-pencraft-Text-module__weight-bold--Ps9DB frontend-pencraft-Text-module__reset--dW0zZ frontend-main-home-sidebar-SidebarTitle-module__title--njy6c">
                                         Most Recent
                                     </div>
-                                    <a class="show-more pc-reset frontend-pencraft-Text-module__color-pub-primary-text--RzL7j frontend-pencraft-Text-module__line-height-20--p0dP8 frontend-pencraft-Text-module__font-meta--U_nxy frontend-pencraft-Text-module__size-11--k1e8b frontend-pencraft-Text-module__weight-medium--x7khA frontend-pencraft-Text-module__transform-uppercase--IDkUL frontend-pencraft-Text-module__reset--dW0zZ frontend-pencraft-Text-module__meta--jzHdd frontend-main-home-MetaLink-module__link--b9iM0"
-                                       href="#">Show more</a>
+<!--                                    <a class="show-more pc-reset frontend-pencraft-Text-module__color-pub-primary-text&#45;&#45;RzL7j frontend-pencraft-Text-module__line-height-20&#45;&#45;p0dP8 frontend-pencraft-Text-module__font-meta&#45;&#45;U_nxy frontend-pencraft-Text-module__size-11&#45;&#45;k1e8b frontend-pencraft-Text-module__weight-medium&#45;&#45;x7khA frontend-pencraft-Text-module__transform-uppercase&#45;&#45;IDkUL frontend-pencraft-Text-module__reset&#45;&#45;dW0zZ frontend-pencraft-Text-module__meta&#45;&#45;jzHdd frontend-main-home-MetaLink-module__link&#45;&#45;b9iM0"-->
+<!--                                       href="#">Show more</a>-->
                                 </div>
-
                                 <div class="article-container recent-articles">
                                     <th:block th:each="article : ${recentArticles}">
                                         <div class="pc-display-flex pc-flexDirection-column pc-reset pc-borderRadius-small article-default">
@@ -157,31 +158,8 @@
                                                 </div>
                                                 <div class="pc-display-flex pc-flexDirection-column pc-reset frontend-main-home-PostPreview-index-module__actions--eae29">
                                                     <div class="post-ufi style-compressed justified themed">
-                                                        <div class="like-button-container post-ufi-button style-compressed">
-                                                            <a class="post-ufi-button style-compressed has-label with-border"
-                                                               role="button">
-                                                                <svg class="icon" fill="#000000" height="16"
-                                                                     role="img" stroke="#000" stroke-width="2"
-                                                                     style="height: 16px; width: 16px;"
-                                                                     viewBox="0 0 24 24" width="16"
-                                                                     xmlns="http://www.w3.org/2000/svg">
-                                                                    <g>
-                                                                        <title></title>
-                                                                        <svg class="lucide lucide-heart "
-                                                                             height="24" stroke-linecap="round"
-                                                                             stroke-linejoin="round" stroke-width="2"
-                                                                             viewBox="0 0 24 24" width="24"
-                                                                             xmlns="http://www.w3.org/2000/svg">
-                                                                            <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z">
-                                                                            </path>
-                                                                        </svg>
-                                                                    </g>
-                                                                </svg>
-                                                                <div class="label">6</div>
-                                                            </a>
-                                                        </div>
                                                         <a class="post-ufi-button style-compressed post-ufi-comment-button has-label with-border"
-                                                           href="#" role="button">
+                                                           th:href="@{'/article/' + ${article.id}}" role="button">
                                                             <svg class="icon" fill="#000000" height="16" role="img"
                                                                  stroke="#000" stroke-width="2"
                                                                  style="height: 16px; width: 16px;"
@@ -199,10 +177,10 @@
                                                                     </svg>
                                                                 </g>
                                                             </svg>
-                                                            <div class="label">3</div>
+                                                            <div class="label" th:text="${#lists.size(article.comments)}"></div>
                                                         </a><a
-                                                            class="post-ufi-button style-compressed no-label with-border"
-                                                            href="javascript:void(0)" role="button">
+                                                            class="post-ufi-button style-compressed no-label with-border download-link"
+                                                            th:href="@{'/article/' + ${article.id} + '/pdf'}" role="button">
                                                         <svg class="icon" fill="none" height="16"
                                                              stroke="currentColor" stroke-linecap="round"
                                                              stroke-linejoin="round" stroke-width="2"
@@ -248,28 +226,28 @@
                                                  role="button">
                                                 Featured
                                             </div>
-                                            <div class="frontend-pencraft-unstable-PillTabs-module__pillTab--cqGWE"
-                                                 role="button">
-                                                Popular
-                                            </div>
+<!--                                            <div class="frontend-pencraft-unstable-PillTabs-module__pillTab&#45;&#45;cqGWE"-->
+<!--                                                 role="button">-->
+<!--                                                Popular-->
+<!--                                            </div>-->
                                         </div>
-                                        <div class="frontend-main-home-ArchiveAdapted-module__iconButton--_iQQr"
-                                             role="button">
-                                            <svg fill="none" height="20" role="img" stroke="#000" stroke-width="1.8"
-                                                 style="height: 20px; width: 20px;" viewBox="0 0 24 24" width="20"
-                                                 xmlns="http://www.w3.org/2000/svg">
-                                                <g>
-                                                    <title></title>
-                                                    <path d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19Z"
-                                                          stroke="#555555" stroke-linecap="round"
-                                                          stroke-linejoin="round" stroke-width="1.5"></path>
-                                                    <path d="M21.0004 21.0004L16.6504 16.6504" stroke="#555555"
-                                                          stroke-linecap="round" stroke-linejoin="round"
-                                                          stroke-width="1.5">
-                                                    </path>
-                                                </g>
-                                            </svg>
-                                        </div>
+<!--                                        <div class="frontend-main-home-ArchiveAdapted-module__iconButton&#45;&#45;_iQQr"-->
+<!--                                             role="button">-->
+<!--                                            <svg fill="none" height="20" role="img" stroke="#000" stroke-width="1.8"-->
+<!--                                                 style="height: 20px; width: 20px;" viewBox="0 0 24 24" width="20"-->
+<!--                                                 xmlns="http://www.w3.org/2000/svg">-->
+<!--                                                <g>-->
+<!--                                                    <title></title>-->
+<!--                                                    <path d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19Z"-->
+<!--                                                          stroke="#555555" stroke-linecap="round"-->
+<!--                                                          stroke-linejoin="round" stroke-width="1.5"></path>-->
+<!--                                                    <path d="M21.0004 21.0004L16.6504 16.6504" stroke="#555555"-->
+<!--                                                          stroke-linecap="round" stroke-linejoin="round"-->
+<!--                                                          stroke-width="1.5">-->
+<!--                                                    </path>-->
+<!--                                                </g>-->
+<!--                                            </svg>-->
+<!--                                        </div>-->
                                     </div>
                                     <div class="portable-archive-list">
                                         <div>
@@ -310,35 +288,8 @@
                                                                 </div>
                                                                 <div class="pc-display-flex pc-flexDirection-column pc-reset frontend-main-home-PostPreview-index-module__actions--eae29">
                                                                     <div class="post-ufi style-compressed justified themed">
-                                                                        <div class="like-button-container post-ufi-button style-compressed">
-                                                                            <a class="post-ufi-button style-compressed has-label with-border"
-                                                                               role="button">
-                                                                                <svg class="icon" fill="#000000"
-                                                                                     height="16" role="img"
-                                                                                     stroke="#000" stroke-width="2"
-                                                                                     style="height: 16px; width: 16px;"
-                                                                                     viewBox="0 0 24 24" width="16"
-                                                                                     xmlns="http://www.w3.org/2000/svg">
-                                                                                    <g>
-                                                                                        <svg class="lucide lucide-heart "
-                                                                                             height="24"
-                                                                                             stroke-linecap="round"
-                                                                                             stroke-linejoin="round"
-                                                                                             stroke-width="2"
-                                                                                             viewBox="0 0 24 24"
-                                                                                             width="24"
-                                                                                             xmlns="http://www.w3.org/2000/svg">
-                                                                                            <path
-                                                                                                    d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z">
-                                                                                            </path>
-                                                                                        </svg>
-                                                                                    </g>
-                                                                                </svg>
-                                                                                <div class="label">1</div>
-                                                                            </a>
-                                                                        </div>
                                                                         <a class="post-ufi-button style-compressed post-ufi-comment-button has-label with-border"
-                                                                           href="#" role="button">
+                                                                           th:href="@{'/article/' + ${article.id}}" role="button">
                                                                             <svg class="icon" fill="#000000"
                                                                                  height="16" role="img" stroke="#000"
                                                                                  stroke-width="2"
@@ -360,10 +311,10 @@
                                                                                     </svg>
                                                                                 </g>
                                                                             </svg>
-                                                                            <div class="label">1</div>
+                                                                            <div class="label" th:text="${#lists.size(article.comments)}"></div>
                                                                         </a><a
-                                                                            class="post-ufi-button style-compressed no-label with-border"
-                                                                            href="javascript:void(0)" role="button">
+                                                                            class="post-ufi-button style-compressed no-label with-border download-link"
+                                                                            th:href="@{'/article/' + ${article.id} + '/pdf'}" role="button">
                                                                         <svg class="icon" fill="none"
                                                                              height="16" stroke="currentColor"
                                                                              stroke-linecap="round"
@@ -390,20 +341,20 @@
                                                     </div>
                                                 </th:block>
                                             </div>
-                                            <div class="pc-display-flex pc-paddingTop-16 pc-reset">
-                                                <button
-                                                        class="frontend-pencraft-Button-module__buttonBase--T0hXz frontend-pencraft-Button-module__button--d6e9L frontend-pencraft-Button-module__priority_secondary-theme--YMjyc frontend-pencraft-Button-module__size_medium--PaDMH frontend-pencraft-Button-module__fill_outline--FmYR9 pc-justifyContent-center"
-                                                        data-href="/archive?sort=new" data-testid="archive-view-all"
-                                                        tabIndex="0" type="button">
-                                                    Show More
-                                                    <svg class="lucide lucide-chevron-right " fill="none"
-                                                         height="20" stroke="currentColor" stroke-linecap="round"
-                                                         stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"
-                                                         width="20" xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="m9 18 6-6-6-6"></path>
-                                                    </svg>
-                                                </button>
-                                            </div>
+<!--                                            <div class="pc-display-flex pc-paddingTop-16 pc-reset">-->
+<!--                                                <button-->
+<!--                                                        class="frontend-pencraft-Button-module__buttonBase&#45;&#45;T0hXz frontend-pencraft-Button-module__button&#45;&#45;d6e9L frontend-pencraft-Button-module__priority_secondary-theme&#45;&#45;YMjyc frontend-pencraft-Button-module__size_medium&#45;&#45;PaDMH frontend-pencraft-Button-module__fill_outline&#45;&#45;FmYR9 pc-justifyContent-center"-->
+<!--                                                        data-href="/archive?sort=new" data-testid="archive-view-all"-->
+<!--                                                        tabIndex="0" type="button">-->
+<!--                                                    Show More-->
+<!--                                                    <svg class="lucide lucide-chevron-right " fill="none"-->
+<!--                                                         height="20" stroke="currentColor" stroke-linecap="round"-->
+<!--                                                         stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"-->
+<!--                                                         width="20" xmlns="http://www.w3.org/2000/svg">-->
+<!--                                                        <path d="m9 18 6-6-6-6"></path>-->
+<!--                                                    </svg>-->
+<!--                                                </button>-->
+<!--                                            </div>-->
                                         </div>
                                     </div>
                                 </div>
@@ -415,23 +366,23 @@
                                                     The Wasted Times
                                                 </div>
                                                 <div class="pc-reset frontend-pencraft-Text-module__color-pub-secondary-text--OzRTa frontend-pencraft-Text-module__line-height-20--p0dP8 frontend-pencraft-Text-module__font-text--QmNJR frontend-pencraft-Text-module__size-12--KorQF frontend-pencraft-Text-module__reset--dW0zZ">
-                                                    Subscribe now and enjoy the fine art of creative storytelling,
+                                                    Enjoy the fine art of creative storytelling,
                                                     presented as news.
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="subscribe-widget" data-component-name="SubscribeWidget">
-                                            <div class="pc-display-flex pc-justifyContent-center pc-reset">
-                                                <div class="frontend-components-free_email_form-module__container--OfBh4">
-                                                    <div class="frontend-components-free_email_form-module__sideBySideWrap--yhsgv">
-                                                        <button class="button rightButton primary subscribe-btn frontend-components-free_email_form-module__button--WcLG9">
-                                                            <span class="button-text ">Subscribe</span></button>
-                                                    </div>
-                                                    <div class="frontend-login-typo_handler-EmailTypoHandler-module__animationWrapper--UT0du">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+<!--                                        <div class="subscribe-widget" data-component-name="SubscribeWidget">-->
+<!--                                            <div class="pc-display-flex pc-justifyContent-center pc-reset">-->
+<!--                                                <div class="frontend-components-free_email_form-module__container&#45;&#45;OfBh4">-->
+<!--                                                    <div class="frontend-components-free_email_form-module__sideBySideWrap&#45;&#45;yhsgv">-->
+<!--                                                        <button class="button rightButton primary subscribe-btn frontend-components-free_email_form-module__button&#45;&#45;WcLG9">-->
+<!--                                                            <span class="button-text ">Sign Up</span></button>-->
+<!--                                                    </div>-->
+<!--                                                    <div class="frontend-login-typo_handler-EmailTypoHandler-module__animationWrapper&#45;&#45;UT0du">-->
+<!--                                                    </div>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
                                     </div>
                                     <div class="pc-display-flex pc-flexDirection-column pc-gap-24 pc-reset">
                                         <div class="pc-display-flex pc-flexDirection-column pc-gap-16 pc-reset">

@@ -11,6 +11,4 @@ public interface CommentService {
     CommentDto convertToCommentDto(Comment comment);
 
     boolean createComment(CommentDto commentDto, long articleId, String email);
-
-    List<CommentDto> getAllComments();
 }

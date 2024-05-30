@@ -16,7 +16,7 @@ function previewImage(input, id) {
 function toggleForm(formId) {
     let form = document.getElementById(formId);
     if (form) {
-        form.style.display = (form.style.display === 'none' || form.style.display === '') ? 'block' : 'none';
+        form.style.display = (form.style.display === 'none' || form.style.display === '') ? 'flex' : 'none';
     }
 }
 
@@ -53,3 +53,11 @@ function toggleSignupPopup() {
         body.style.overflow = 'hidden';
     }
 }
+
+document.querySelectorAll('.download-pdf').forEach(function(link) {
+    link.addEventListener('click', function(event) {
+        setTimeout(function() {
+            window.location.href = '/';
+        }, 3000);
+    });
+});

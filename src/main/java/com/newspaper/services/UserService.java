@@ -1,7 +1,7 @@
 package com.newspaper.services;
 
 import com.newspaper.entities.User;
-import com.newspaper.entities.UserRole;
+import com.newspaper.entities.dtos.RoleDto;
 import com.newspaper.entities.dtos.UserDto;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -44,7 +44,8 @@ public interface UserService {
 	 * @param role       The role to set.
 	 * @return True if the user is successfully updated, false otherwise.
 	 */
-	boolean updateUser(String email, boolean isVerified, UserRole role);
+
+	boolean updateUser(String email, boolean isVerified, RoleDto role);
 
 	/**
 	 * Deletes a user based on the email address. Handles the deletion logic and checks for the last remaining admin.

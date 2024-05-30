@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 /**
@@ -30,17 +31,20 @@ public class VerificationController {
 	 * @return The name of the view template to render after verification.
 	 */
 	@GetMapping("/verify/{token}")
-	public String verifyEmail(@PathVariable String token) {
+	public String verifyEmail(RedirectAttributes redirectAttributes, @PathVariable String token) {
 		try {
 			boolean success = verificationService.verifyEmail(token);
 
 			if (success) {
 				logger.info("Email verification successful for token: {}", token);
+				redirectAttributes.addFlashAttribute("successMessage", "Email verification successful.");
             } else {
+				redirectAttributes.addFlashAttribute("errorMessage", "Email verification failed.");
 				logger.warn("Email verification failed for token: {}", token);
             }
             return "redirect:/profile";
         } catch (Exception e) {
+			redirectAttributes.addFlashAttribute("errorMessage", "An error occurred during email verification.");
 			logger.error("Error during email verification for token: {}", token);
 			return "redirect:/profile";
 		}
@@ -53,17 +57,20 @@ public class VerificationController {
 	 * @return The name of the view template to render after attempting to resend the verification email.
 	 */
 	@GetMapping("/resend-verification")
-	public String resendVerificationEmail(@RequestParam("email") String email) {
+	public String resendVerificationEmail(RedirectAttributes redirectAttributes, @RequestParam("email") String email) {
 		try {
 			boolean success = verificationService.resendVerificationEmail(email);
 
 			if (success) {
+				redirectAttributes.addFlashAttribute("successMessage", "Verification email sent successfully.");
 				logger.info("Resent verification email successfully for email: {}", email);
             } else {
+				redirectAttributes.addFlashAttribute("errorMessage", "Failed to send verification email.");
 				logger.warn("Failed to resend verification email for email: {}", email);
             }
             return "redirect:/profile";
         } catch (Exception e) {
+			redirectAttributes.addFlashAttribute("errorMessage", "An error occurred while sending verification email.");
 			logger.error("Error during resend verification email for email: {}", email);
 			return "redirect:/profile";
 		}

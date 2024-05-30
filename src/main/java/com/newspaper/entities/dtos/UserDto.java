@@ -1,7 +1,5 @@
 package com.newspaper.entities.dtos;
 
-import com.newspaper.entities.UserRole;
-
 /**
  * Data Transfer Object (DTO) representing a user.
  * This class is used to transfer user-related information between different layers of the application.
@@ -15,7 +13,7 @@ public class UserDto {
     private String phoneNumber;
     private String profilePicture;
     private boolean isVerified;
-    private UserRole role;
+    private RoleDto role;
 
     //Constructors
 
@@ -31,7 +29,7 @@ public class UserDto {
      * @param name        Full name of the user.
      * @param phoneNumber Phone number of the user.
      */
-    public UserDto(String email, String credential, String name, String phoneNumber, String profilePicture, boolean isVerified, UserRole role) {
+    public UserDto(String email, String credential, String name, String phoneNumber, String profilePicture, boolean isVerified, RoleDto role) {
         super();
         this.email = email;
         this.credential = credential;
@@ -96,11 +94,11 @@ public class UserDto {
         this.isVerified = isVerified;
     }
 
-    public UserRole getRole() {
+    public RoleDto getRole() {
         return role;
     }
 
-    public void setRole(UserRole role) {
+    public void setRole(RoleDto role) {
         this.role = role;
     }
 }

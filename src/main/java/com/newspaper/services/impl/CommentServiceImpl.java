@@ -23,14 +23,12 @@ public class CommentServiceImpl implements CommentService {
     private final ArticleRepository articleRepository;
     private final UserRepository userRepository;
     private final UserService userService;
-    private final ArticleService articleService;
 
-    public CommentServiceImpl(CommentRepository commentRepository, ArticleRepository articleRepository, UserRepository userRepository, UserService userService, ArticleService articleService) {
+    public CommentServiceImpl(CommentRepository commentRepository, ArticleRepository articleRepository, UserRepository userRepository, UserService userService) {
         this.commentRepository = commentRepository;
         this.articleRepository = articleRepository;
         this.userRepository = userRepository;
         this.userService = userService;
-        this.articleService = articleService;
     }
 
     @Override
@@ -50,7 +48,6 @@ public class CommentServiceImpl implements CommentService {
         commentDto.setId(comment.getId());
         commentDto.setContent(comment.getContent());
         commentDto.setCreationDate(comment.getCreationDate());
-        commentDto.setArticle(articleService.convertToArticleDto(comment.getArticle()));
         commentDto.setUser(userService.convertToUserDto(comment.getUser()));
 
         return commentDto;
@@ -74,14 +71,5 @@ public class CommentServiceImpl implements CommentService {
             return true;
         }
         return false;
-    }
-
-    @Override
-    public List<CommentDto> getAllComments() {
-        List<Comment> comments = commentRepository.findAll();
-
-        return comments.stream()
-                .map(this::convertToCommentDto)
-                .collect(Collectors.toList());
     }
 }

@@ -1,10 +1,11 @@
 package com.newspaper.controllers;
 
-import com.newspaper.entities.UserRole;
 import com.newspaper.entities.dtos.CategoryDto;
+import com.newspaper.entities.dtos.RoleDto;
 import com.newspaper.entities.dtos.UserDto;
 import com.newspaper.services.CategoryService;
 import com.newspaper.services.RegistrationService;
+import com.newspaper.services.RoleService;
 import com.newspaper.services.UserService;
 import com.newspaper.utils.ImageUtils;
 import jakarta.servlet.http.HttpSession;
@@ -29,11 +30,13 @@ public class UserProfileController {
     private final UserService userService;
     private final RegistrationService registrationService;
     private final CategoryService categoryService;
+    private final RoleService roleService;
 
-    public UserProfileController(UserService userService, RegistrationService registrationService, CategoryService categoryService) {
+    public UserProfileController(UserService userService, RegistrationService registrationService, CategoryService categoryService, RoleService roleService) {
         this.userService = userService;
         this.registrationService = registrationService;
         this.categoryService = categoryService;
+        this.roleService = roleService;
     }
 
     /**
@@ -185,7 +188,8 @@ public class UserProfileController {
             UserDto user = (UserDto) session.getAttribute("user");
 
             if (user != null) {
-                if (user.getRole() == UserRole.ADMIN) {
+                RoleDto role = roleService.getRoleByName("ADMIN");
+                if (user.getRole().getId() == role.getId()) {
                     logger.warn("Admin {} attempted to access the delete confirmation page.", user.getEmail());
                     return "redirect:/";
                 }
