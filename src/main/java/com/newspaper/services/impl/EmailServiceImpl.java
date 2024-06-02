@@ -30,7 +30,7 @@ public class EmailServiceImpl implements EmailService {
             MimeMessage message = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
-            String link = "http://localhost:8080/verify/" + token;
+            String link = "https://raulc.space/verify/" + token;
 
             helper.setTo(email);
             helper.setSubject("Verify Your Email");
@@ -56,7 +56,7 @@ public class EmailServiceImpl implements EmailService {
             MimeMessage message = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
-            String link = "http://localhost:8080/change-password/" + token;
+            String link = "https://raulc.space/change-password/" + token;
 
             helper.setTo(email);
             helper.setSubject("Change Your Password");
