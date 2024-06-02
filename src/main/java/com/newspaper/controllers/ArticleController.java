@@ -137,16 +137,14 @@ public class ArticleController {
      * @param response           the HTTP servlet response
      */
     @GetMapping("/article/{id}/pdf")
-    public String generateArticlePDF(RedirectAttributes redirectAttributes, @PathVariable long id, HttpServletResponse response) {
+    public void generateArticlePDF(RedirectAttributes redirectAttributes, @PathVariable long id, HttpServletResponse response) {
         try {
             ArticleDto article = articleService.getArticleById(id);
             ByteArrayOutputStream byteArrayOutputStream = PDFUtils.createPdfDocument(article);
             PDFUtils.sendPdfResponse(response, byteArrayOutputStream, article.getTitle());
-            return "redirect:/";
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Failed to download pdf. Please try again later.");
             logger.error("Error generating PDF for article with ID: {}", id, e);
-            return "redirect:/";
         }
     }
 }
