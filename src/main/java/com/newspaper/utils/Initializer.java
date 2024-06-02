@@ -12,6 +12,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
+/**
+ * Initializer component that runs on application startup to set up initial roles and an admin user.
+ */
 @Component
 public class Initializer implements CommandLineRunner {
 
@@ -27,13 +30,19 @@ public class Initializer implements CommandLineRunner {
         this.userService = userService;
     }
 
+    /**
+     * Runs the initialization logic to create roles and an admin user if they do not already exist.
+     *
+     * @param args Command line arguments passed to the application.
+     * @throws Exception if an error occurs during initialization.
+     */
     @Override
     public void run(String... args) throws Exception {
 
-        createRoleIfNotExist("USER");
-        createRoleIfNotExist("SUBSCRIBER");
-        createRoleIfNotExist("WRITER");
-        createRoleIfNotExist("ADMIN");
+//        createRoleIfNotExist("USER");
+//        createRoleIfNotExist("SUBSCRIBER");
+//        createRoleIfNotExist("WRITER");
+//        createRoleIfNotExist("ADMIN");
 
         Optional<Role> optionalRole = roleRepository.findByName("ADMIN");
 
@@ -41,11 +50,16 @@ public class Initializer implements CommandLineRunner {
             Role role = optionalRole.get();
             long adminCount = userRepository.countByRole(role);
             if(adminCount == 0){
-                userService.createUser(new UserDto("admin", Encryptor.encrypt("admin"), null, null, null, true, roleService.getRoleByName("ADMIN")));
+                userService.createUser(new UserDto("admin", Encryptor.encrypt("admin14564"), null, null, null, true, roleService.getRoleByName("ADMIN")));
             }
         }
     }
 
+    /**
+     * Creates a role if it does not already exist in the database.
+     *
+     * @param roleName The name of the role to create.
+     */
     private void createRoleIfNotExist(String roleName) {
         if (roleService.getRoleByName(roleName) == null) {
             roleService.createRole(new RoleDto(roleName));

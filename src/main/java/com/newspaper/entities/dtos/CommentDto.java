@@ -2,6 +2,10 @@ package com.newspaper.entities.dtos;
 
 import java.time.LocalDateTime;
 
+/**
+ * Data Transfer Object (DTO) representing a comment.
+ * This class is used to transfer comment-related information between different layers of the application.
+ */
 public class CommentDto {
 
     private long id;

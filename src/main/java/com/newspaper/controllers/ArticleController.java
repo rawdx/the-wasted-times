@@ -1,25 +1,16 @@
 package com.newspaper.controllers;
 
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.time.LocalDateTime;
 import java.util.List;
 
 import com.newspaper.entities.ArticleStatus;
 import com.newspaper.entities.dtos.*;
-import com.newspaper.services.CommentService;
 import com.newspaper.services.RoleService;
 import com.newspaper.utils.ImageUtils;
+import com.newspaper.utils.PDFUtils;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
-import org.apache.pdfbox.pdmodel.font.Standard14Fonts;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
-import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -30,8 +21,6 @@ import com.newspaper.services.ArticleService;
 import com.newspaper.services.CategoryService;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import javax.imageio.ImageIO;
 
 /**
  * Controller responsible for handling article-related operations.
@@ -94,7 +83,7 @@ public class ArticleController {
      * @return A redirect to the writing page ("/write") after article creation.
      */
     @PostMapping("/write/create")
-    public String createArticle(RedirectAttributes redirectAttributes, HttpSession session, Model model, @RequestParam String title, @RequestParam String subtitle, @RequestParam String content, @RequestPart("image") MultipartFile file) {
+    public String createArticle(RedirectAttributes redirectAttributes, HttpSession session, @RequestParam String title, @RequestParam String subtitle, @RequestParam String content, @RequestPart("image") MultipartFile file) {
         try {
             UserDto writer = (UserDto) session.getAttribute("user");
 
@@ -140,111 +129,24 @@ public class ArticleController {
         }
     }
 
-
+    /**
+     * Generates a PDF document for the article with the specified ID and sends it as a response.
+     *
+     * @param redirectAttributes the redirect attributes to add flash attributes
+     * @param id                 the ID of the article
+     * @param response           the HTTP servlet response
+     */
     @GetMapping("/article/{id}/pdf")
-    public void generateArticlePDF(@PathVariable long id, HttpServletResponse response) {
+    public String generateArticlePDF(RedirectAttributes redirectAttributes, @PathVariable long id, HttpServletResponse response) {
         try {
-            // Obtener el artículo
             ArticleDto article = articleService.getArticleById(id);
-
-            // Crear un nuevo documento PDF
-            PDDocument document = new PDDocument();
-            PDPage page = new PDPage();
-            document.addPage(page);
-
-            // Obtener el ancho y alto de la página
-            float pageWidth = page.getMediaBox().getWidth();
-            float pageHeight = page.getMediaBox().getHeight();
-            float margin = 50;
-            float usableWidth = pageWidth - 2 * margin;
-
-            // Crear un nuevo contenido de página
-            PDPageContentStream contentStream = new PDPageContentStream(document, page);
-
-            // Iniciar el texto
-            contentStream.beginText();
-
-            // Agregar el título del artículo
-            PDType1Font titleFont = new PDType1Font(Standard14Fonts.FontName.HELVETICA_BOLD);
-            int titleFontSize = 16;
-            String title = article.getTitle().replaceAll("[\\r\\n]", " ");
-            float titleWidth = titleFont.getStringWidth(title) / 1000 * titleFontSize;
-            float titleX = (pageWidth - titleWidth) / 2;
-            contentStream.setFont(titleFont, titleFontSize);
-            contentStream.newLineAtOffset(titleX, pageHeight - 50); // Cambiar la coordenada y según sea necesario
-            contentStream.showText(title);
-            contentStream.newLineAtOffset(-titleX, -30); // Mover el cursor hacia abajo y resetear x
-
-            // Agregar el subtítulo del artículo
-            PDType1Font subtitleFont = new PDType1Font(Standard14Fonts.FontName.HELVETICA_BOLD);
-            int subtitleFontSize = 12;
-            String subtitle = article.getSubtitle().replaceAll("[\\r\\n]", " ");
-            float subtitleWidth = subtitleFont.getStringWidth(subtitle) / 1000 * subtitleFontSize;
-            float subtitleX = (pageWidth - subtitleWidth) / 2;
-            contentStream.setFont(subtitleFont, subtitleFontSize);
-            contentStream.newLineAtOffset(subtitleX, -20); // Mover el cursor hacia arriba
-            contentStream.showText(subtitle);
-            contentStream.newLineAtOffset(-subtitleX, -30); // Mover el cursor hacia abajo y resetear x
-
-            // Finalizar el texto
-            contentStream.endText();
-
-            // Agregar la imagen
-            if (article.getImage() != null && !article.getImage().isEmpty()) {
-                byte[] imageBytes = ImageUtils.convertToByteArray(article.getImage());
-                BufferedImage bufferedImage = ImageIO.read(new ByteArrayInputStream(imageBytes));
-                PDImageXObject pdImage = PDImageXObject.createFromByteArray(document, imageBytes, "image");
-
-                // Obtener el tamaño de la imagen
-                float imageWidth = pdImage.getWidth();
-                float imageHeight = pdImage.getHeight();
-
-                // Definir el tamaño del contenedor de la imagen
-                float containerHeight = 300; // Altura fija del contenedor
-                float containerWidth = (containerHeight / imageHeight) * imageWidth;
-
-                // Calcular las coordenadas para centrar la imagen en la página
-                float imageX = (pageWidth - containerWidth) / 2;
-                float imageY = pageHeight - 150 - containerHeight;
-
-                // Dibujar la imagen en el contenedor
-                contentStream.drawImage(pdImage, imageX, imageY, containerWidth, containerHeight);
-            }
-
-            // Reanudar el texto para la descripción
-            contentStream.beginText();
-            contentStream.newLineAtOffset(50, 300); // Cambiar la coordenada y según sea necesario
-
-            // Agregar la descripción del artículo
-            PDType1Font contentFont = new PDType1Font(Standard14Fonts.FontName.HELVETICA);
-            int contentFontSize = 12;
-            String content = article.getContent().replaceAll("[\\r\\n]", " ");
-            contentStream.setFont(contentFont, contentFontSize);
-            contentStream.showText(content);
-            contentStream.newLine();
-
-            // Finalizar el texto
-            contentStream.endText();
-
-            // Cerrar el contenido de la página
-            contentStream.close();
-
-            // Guardar el documento en un flujo de bytes
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            document.save(byteArrayOutputStream);
-            document.close();
-
-            // Establecer la respuesta del servlet para descargar el PDF
-            response.setContentType("application/pdf");
-            response.setHeader("Content-Disposition", "attachment; filename=" + article.getTitle() + ".pdf");
-            response.setContentLength(byteArrayOutputStream.size());
-            response.getOutputStream().write(byteArrayOutputStream.toByteArray());
-            response.getOutputStream().flush();
-
-            // Cerrar el flujo de bytes
-            byteArrayOutputStream.close();
+            ByteArrayOutputStream byteArrayOutputStream = PDFUtils.createPdfDocument(article);
+            PDFUtils.sendPdfResponse(response, byteArrayOutputStream, article.getTitle());
+            return "redirect:/";
         } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Failed to download pdf. Please try again later.");
             logger.error("Error generating PDF for article with ID: {}", id, e);
+            return "redirect:/";
         }
     }
 }

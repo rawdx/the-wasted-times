@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
 
+/**
+ * Controller responsible for handling comment-related operations.
+ */
 @Controller
 public class CommentController {
 
@@ -23,6 +26,14 @@ public class CommentController {
         this.commentService = commentService;
     }
 
+    /**
+     * Handles the creation of a new comment.
+     *
+     * @param session The HTTP session containing user information.
+     * @param content The content of the comment to be created.
+     * @param articleId The ID of the article to which the comment is associated.
+     * @return A redirect string to the article page.
+     */
     @PostMapping("/comment/create")
     public String createComment(HttpSession session, @RequestParam String content, @RequestParam long articleId) {
         try {

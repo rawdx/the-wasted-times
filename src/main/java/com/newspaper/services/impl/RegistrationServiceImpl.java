@@ -32,10 +32,10 @@ public class RegistrationServiceImpl implements RegistrationService {
 
 	@Override
 	public boolean registerUser(UserDto user) {
-//        if (!userService.isValidEmail(user.getEmail())) {
-//            logger.warn("Sign up failed - Invalid email address: {}", user.getEmail());
-//            return false;
-//        }
+        if (!userService.isValidEmail(user.getEmail())) {
+            logger.warn("Sign up failed - Invalid email address: {}", user.getEmail());
+            return false;
+        }
 
 		if (userRepository.existsByEmail(user.getEmail())) {
 			logger.warn("Registration failed - Email already exists: {}", user.getEmail());

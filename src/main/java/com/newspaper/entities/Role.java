@@ -4,6 +4,10 @@ import jakarta.persistence.*;
 
 import java.util.List;
 
+/**
+ * Entity representing a role in the application.
+ * This class is mapped to the "roles" table in the database.
+ */
 @Entity
 @Table(name = "roles")
 public class Role {
@@ -19,8 +23,12 @@ public class Role {
     @OneToMany(mappedBy = "role")
     private List<User> users;
 
+    //Constructors
+
     public Role() {
     }
+
+    // Getters and setters
 
     public long getId() {
         return id;

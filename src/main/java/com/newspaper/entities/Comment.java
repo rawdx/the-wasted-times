@@ -4,6 +4,10 @@ import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
+/**
+ * Entity representing a comment in the application.
+ * This class is mapped to the "comments" table in the database.
+ */
 @Entity
 @Table(name = "comments")
 public class Comment {

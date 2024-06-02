@@ -94,6 +94,15 @@ public class AdministrationController {
 		}
 	}
 
+	/**
+	 * Handles the search for users by an admin.
+	 *
+	 * @param session The HttpSession for checking admin.
+	 * @param model The Model to hold attributes for the view.
+	 * @param query The search query string.
+	 * @param page The current page number for pagination (default is 1).
+	 * @return The view name for the admin users page.
+	 */
 	@GetMapping("/users/search")
 	public String searchUsers(HttpSession session, Model model,
 							  @RequestParam(name = "query") String query,

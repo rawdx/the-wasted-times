@@ -8637,7 +8637,7 @@ button.user-indicator.signed-in .menu-trigger-image {
 .single-post-container {
     background: var(--web_bg_color, var(--color-bg-primary));
     color: var(--print_on_web_bg_color, var(--color-primary));
-    padding: 30px 0 40px;
+    padding: 60px 0 40px;
 }
 
 .single-post-container .modal-exit-btn svg {
@@ -21392,7 +21392,6 @@ p.frontend-main-home-PostPreview-PostPreviewAuthors-module__link--XzaS3 {
 
 .frontend-main-archive_page-module__container--Brctc .container {
     width: auto;
-    margin: 0
 }
 
 .frontend-components-TranscriptionText-module__transcriptionStatus--xwFBI {
@@ -24178,14 +24177,14 @@ div.profile-updater form .button[type=submit][disabled]::after {
 .post-title {
     font-family: 'Merriweather', serif;
     font-weight: 600;
-    font-size: 28px;
+    font-size: 32px;
     text-align: center;
 }
 
 .subtitle {
     font-family: 'EB Garamond', serif;
     font-weight: 500;
-    font-size: 22px;
+    font-size: 24px;
     text-align: center;
 }
 
@@ -24194,6 +24193,7 @@ div.profile-updater form .button[type=submit][disabled]::after {
     font-size: 17px;
     padding: 0 10px 15px;
     line-height: 1.6;
+    white-space: pre-line;
 }
 
 .popup-overlay {

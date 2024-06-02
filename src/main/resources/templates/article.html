@@ -31,7 +31,9 @@
                                                  th:src="'data:image/png;base64, ' + ${article.image}" width="1024">
                                         </div>
                                     </div>
-                                    <div class="content-container" th:text="${article.content}"></div>
+                                    <div class="content-container">
+                                        <p th:utext="${article.content}"></p>
+                                    </div>
                                 </div>
                             </div>
                             <div class="pc-display-flex pc-flexDirection-column pc-paddingBottom-16 pc-reset">

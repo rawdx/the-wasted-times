@@ -74,31 +74,8 @@
 													</div>
 													<div class="pencraft pc-display-flex pc-flexDirection-column pc-reset frontend-main-home-PostPreview-index-module__actions--eae29">
 													<div class="post-ufi style-compressed justified themed">
-														<div
-															class="like-button-container post-ufi-button style-compressed">
-															<a role="button"
-																class="post-ufi-button style-compressed has-label with-border"><svg
-																	role="img" style="height: 16px; width: 16px;"
-																	width="16" height="16" viewBox="0 0 24 24"
-																	fill="#000000" stroke-width="2" stroke="#000"
-																	xmlns="http://www.w3.org/2000/svg" class="icon">
-																	<g>
-																		<title></title><svg
-																			xmlns="http://www.w3.org/2000/svg"
-																			width="24" height="24" viewBox="0 0 24 24"
-																			stroke-width="2" stroke-linecap="round"
-																			stroke-linejoin="round"
-																			class="lucide lucide-heart ">
-																			<path
-																				d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z">
-																			</path>
-																		</svg>
-																	</g>
-																</svg>
-																<div class="label">1</div>
-															</a>
-														</div><a role="button"
-															href="#"
+														<a role="button"
+														   th:href="@{'/article/' + ${article.id}}"
 															class="post-ufi-button style-compressed post-ufi-comment-button no-label with-border"><svg
 																role="img" style="height: 16px; width: 16px;" width="16"
 																height="16" viewBox="0 0 24 24" fill="#000000"
@@ -113,7 +90,9 @@
 																		<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"></path>
 																	</svg>
 																</g>
-															</svg></a><a role="button" href="javascript:void(0)"
+															</svg>
+															<div class="label" th:text="${#lists.size(article.comments)}"></div>
+														</a><a role="button" th:href="@{'/article/' + ${article.id} + '/pdf'}"
 															class="post-ufi-button style-compressed no-label with-border"><svg
 																xmlns="http://www.w3.org/2000/svg" width="24"
 																height="16" viewBox="0 0 24 24" fill="none"

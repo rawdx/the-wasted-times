@@ -7,15 +7,15 @@ import com.newspaper.entities.dtos.CommentDto;
 import com.newspaper.repositories.ArticleRepository;
 import com.newspaper.repositories.CommentRepository;
 import com.newspaper.repositories.UserRepository;
-import com.newspaper.services.ArticleService;
 import com.newspaper.services.CommentService;
 import com.newspaper.services.UserService;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
+/**
+ * Implementation of the {@link CommentService} interface for comment-related operations.
+ */
 @Service
 public class CommentServiceImpl implements CommentService {
 

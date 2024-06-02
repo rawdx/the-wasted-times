@@ -1,5 +1,9 @@
 package com.newspaper.entities.dtos;
 
+/**
+ * Data Transfer Object (DTO) representing a role.
+ * This class is used to transfer category-related information between different layers of the application.
+ */
 public class RoleDto {
 
     private long id;

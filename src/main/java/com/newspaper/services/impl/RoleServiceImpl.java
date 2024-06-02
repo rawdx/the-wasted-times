@@ -1,6 +1,5 @@
 package com.newspaper.services.impl;
 
-import com.newspaper.controllers.AdministrationController;
 import com.newspaper.entities.Role;
 import com.newspaper.entities.dtos.RoleDto;
 import com.newspaper.repositories.RoleRepository;
@@ -13,6 +12,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * Implementation of the {@link RoleService} interface for category-related operations.
+ */
 @Service
 public class RoleServiceImpl implements RoleService {
     private static final Logger logger = LoggerFactory.getLogger(RoleServiceImpl.class);
