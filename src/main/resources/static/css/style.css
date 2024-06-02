@@ -3826,7 +3826,9 @@ table.thread-head .notifications-alert a {
 }
 
 .portable-archive .portable-archive-list {
-    padding-bottom: 18px
+    padding-bottom: 18px;
+    display: flex;
+    flex-direction: column-reverse;
 }
 
 .portable-archive .portable-archive-list .portable-archive-empty {
