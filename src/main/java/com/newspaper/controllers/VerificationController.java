@@ -1,6 +1,9 @@
 package com.newspaper.controllers;
 
+import com.newspaper.entities.dtos.UserDto;
+import com.newspaper.services.LoginService;
 import com.newspaper.services.VerificationService;
+import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -19,10 +22,12 @@ public class VerificationController {
 	private static final Logger logger = LoggerFactory.getLogger(VerificationController.class);
 
 	private final VerificationService verificationService;
+	private final LoginService loginService;
 
-	public VerificationController(VerificationService verificationService) {
+	public VerificationController(VerificationService verificationService, LoginService loginService) {
 		this.verificationService = verificationService;
-	}
+        this.loginService = loginService;
+    }
 
 	/**
 	 * Handles the GET request for email verification using the provided token.
@@ -31,9 +36,10 @@ public class VerificationController {
 	 * @return The name of the view template to render after verification.
 	 */
 	@GetMapping("/verify/{token}")
-	public String verifyEmail(RedirectAttributes redirectAttributes, @PathVariable String token) {
+	public String verifyEmail(HttpSession session, RedirectAttributes redirectAttributes, @PathVariable String token) {
 		try {
 			boolean success = verificationService.verifyEmail(token);
+			session.invalidate();
 
 			if (success) {
 				logger.info("Email verification successful for token: {}", token);
