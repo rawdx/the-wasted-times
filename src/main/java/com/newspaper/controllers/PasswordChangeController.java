@@ -52,6 +52,31 @@ public class PasswordChangeController {
 	}
 
 	/**
+	 * Handles the forgot password functionality by initiating a password change process for the given email.
+	 *
+	 * @param redirectAttributes the attributes for a redirect scenario
+	 * @param email the email address of the user who forgot their password
+	 * @return a redirect to the home page with a flash attribute indicating the result of the password change request
+	 */
+	@PostMapping("/forgot-password")
+	public String ForgotPassword(RedirectAttributes redirectAttributes, @RequestParam String email) {
+		try {
+			if (passwordChangeService.initiatePasswordChange(email)) {
+				redirectAttributes.addFlashAttribute("errorMessage", "Password change email sent successfully.");
+				logger.info("Password change initiated for user: {}", email);
+			} else {
+				redirectAttributes.addFlashAttribute("errorMessage", "Failed to send the password change email.");
+				logger.warn("Password change failed for user: {}", email);
+			}
+			return "redirect:/";
+		} catch (Exception e) {
+			redirectAttributes.addFlashAttribute("errorMessage", "An error occurred during the password change.");
+			logger.error("Error initiating password change for email: {}", email, e);
+			return "redirect:/";
+		}
+	}
+
+	/**
 	 * Shows the change password form.
 	 *
 	 * @param token The password change token.

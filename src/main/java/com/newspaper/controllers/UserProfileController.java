@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -46,12 +47,17 @@ public class UserProfileController {
      * @return The name of the view template to render.
      */
     @GetMapping
-    public String viewProfile(HttpSession session, Model model) {
+    public String viewProfile(RedirectAttributes redirectAttributes, HttpSession session, Model model) {
         try {
             UserDto user = (UserDto) session.getAttribute("user");
 
             if (user == null) {
                 logger.warn("User not found in session.");
+                return "redirect:/";
+            }
+
+            if (!user.isVerified()) {
+                redirectAttributes.addFlashAttribute("errorMessage", "You need to verify your email to access the profile.");
                 return "redirect:/";
             }
 

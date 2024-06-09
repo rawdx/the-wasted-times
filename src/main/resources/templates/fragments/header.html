@@ -34,7 +34,6 @@
                                      th:if="${session.user != null && session.user.profilePicture == null}"/>
                             </a>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -45,6 +44,10 @@
 
             <div id="signup-popup" style="display: none;">
                 <div th:replace="~{fragments/index/form-signup :: form}"></div>
+            </div>
+
+            <div id="forgot-popup" style="display: none;">
+                <div th:replace="~{fragments/index/form-forgot :: form}"></div>
             </div>
 
             <div class="overflow-list-container sections-overflow">

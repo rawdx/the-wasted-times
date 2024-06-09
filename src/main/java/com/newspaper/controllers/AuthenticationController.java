@@ -70,6 +70,7 @@ public class AuthenticationController {
 			if (registrationService.registerUser(user)) {
 				session.setAttribute("user", user);
 				logger.info("User signed up successfully: {}", email);
+				redirectAttributes.addFlashAttribute("errorMessage", "User signed up successfully. A verification email has been sent.");
             } else {
 				logger.warn("User registration failed for email: {}", email);
 				redirectAttributes.addFlashAttribute("errorMessage", "User registration failed.");

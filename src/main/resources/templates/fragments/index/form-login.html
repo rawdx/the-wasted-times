@@ -1,24 +1,21 @@
 <form id="login" th:action="@{/login}" th:method="post">
-    <div class="row" style="padding: 0 0 15px 0">
-        <div class="col-3"></div>
-        <div class="col-6">
-            <h3>Login</h3>
+        <div class="row" style="padding: 0 0 15px 0">
+            <div class="col-3"></div>
+            <div class="col-6">
+                <h3>Login</h3>
+            </div>
+            <div class="col-3 form-head">
+                <button onclick="toggleLoginPopup()" class="button login-button close-button sign-in-link outline-grayscale"><i class="fa-solid fa-x"></i></button>
+            </div>
         </div>
-        <div class="col-3 form-head">
-            <button onclick="toggleLoginPopup()" class="button login-button close-button sign-in-link outline-grayscale"><i class="fa-solid fa-x"></i></button>
+        <div class="form-group">
+            <label for="login-email">Email:</label>
+            <input class="form-control" id="login-email" maxlength="255" name="email" autocomplete="email" required type="text">
         </div>
-    </div>
-    <div class="form-group">
-        <label for="login-email">Email:</label>
-        <input class="form-control" id="login-email" maxlength="255" name="email" autocomplete="email" required type="text">
-    </div>
-    <div class="form-group">
-        <label for="login-password">Password:</label>
-        <input class="form-control" id="login-password" maxlength="255" name="password" autocomplete="current-password" required type="password">
-    </div>
-    <button class="btn btn-primary btn-block" type="submit">Enter</button>
-</form>
-
-<!--<button class="button login-button sign-in-link outline-grayscale" onclick="toggleLoginPopup()"-->
-<!--        th:if="${session.user == null}" type="button">Login-->
-<!--</button>-->
+        <div class="form-group">
+            <label for="login-password">Password:</label>
+            <input class="form-control" id="login-password" maxlength="255" name="password" autocomplete="current-password" required type="password" style="margin-bottom: 5px">
+        </div>
+        <button onclick="toggleForgotPopup()" class="button forgot-button login-button close-button sign-in-link outline-grayscale">Forgot Password?</button>
+        <button class="btn btn-primary btn-block" type="submit">Enter</button>
+    </form>

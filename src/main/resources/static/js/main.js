@@ -20,9 +20,14 @@ function toggleForm(formId) {
     }
 }
 
-function toggleLoginPopup() {
+function toggleLoginPopup(event) {
+    if (event) {
+        event.preventDefault();
+    }
+
     let loginPopup = document.getElementById('login-popup');
     let signupPopup = document.getElementById('signup-popup');
+    let forgotPopup = document.getElementById('forgot-popup');
     let body = document.body;
 
     document.body.classList.add("remove-scrolling");
@@ -33,6 +38,7 @@ function toggleLoginPopup() {
     } else {
         loginPopup.style.display = 'block';
         signupPopup.style.display = 'none';
+        forgotPopup.style.display = 'none';
         body.style.overflow = 'hidden';
     }
 }
@@ -40,6 +46,7 @@ function toggleLoginPopup() {
 function toggleSignupPopup() {
     let signupPopup = document.getElementById('signup-popup');
     let loginPopup = document.getElementById('login-popup');
+    let forgotPopup = document.getElementById('forgot-popup');
     let body = document.body;
 
     document.body.classList.add("remove-scrolling");
@@ -49,6 +56,30 @@ function toggleSignupPopup() {
         body.style.overflow = 'auto';
     } else {
         signupPopup.style.display = 'block';
+        loginPopup.style.display = 'none';
+        forgotPopup.style.display = 'none';
+        body.style.overflow = 'hidden';
+    }
+}
+
+function toggleForgotPopup(event) {
+    if (event) {
+        event.preventDefault();
+    }
+
+    let loginPopup = document.getElementById('login-popup');
+    let signupPopup = document.getElementById('signup-popup');
+    let forgotPopup = document.getElementById('forgot-popup')
+    let body = document.body;
+
+    document.body.classList.add("remove-scrolling");
+
+    if (forgotPopup.style.display === 'block') {
+        forgotPopup.style.display = 'none';
+        loginPopup.style.display = 'none';
+        body.style.overflow = 'auto';
+    } else {
+        forgotPopup.style.display = 'block';
         loginPopup.style.display = 'none';
         body.style.overflow = 'hidden';
     }

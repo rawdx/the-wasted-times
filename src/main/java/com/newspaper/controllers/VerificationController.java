@@ -37,16 +37,16 @@ public class VerificationController {
 
 			if (success) {
 				logger.info("Email verification successful for token: {}", token);
-				redirectAttributes.addFlashAttribute("successMessage", "Email verification successful.");
+				redirectAttributes.addFlashAttribute("errorMessage", "Email verification successful.");
             } else {
 				redirectAttributes.addFlashAttribute("errorMessage", "Email verification failed.");
 				logger.warn("Email verification failed for token: {}", token);
             }
-            return "redirect:/profile";
+            return "redirect:/";
         } catch (Exception e) {
 			redirectAttributes.addFlashAttribute("errorMessage", "An error occurred during email verification.");
 			logger.error("Error during email verification for token: {}", token);
-			return "redirect:/profile";
+			return "redirect:/";
 		}
 	}
 

@@ -127,21 +127,17 @@
 					<td>
 						<div class="row">
 							<div class="col">
-								<button id="showContent" class="button profile-button" th:onclick="'toggleContent(\'content-' + ${article.id} + '\');'">Show Content</button>
+								<button class="button profile-button" th:onclick="'showContent(\'content-' + ${article.id} + '\', \'' + ${article.id} + '\');'">Show Content</button>
 							</div>
-							<div class="row">
-								<div class="col">
-									<!-- Article content (initially hidden) -->
-									<div th:id="'content-' + ${article.id}"
-										 th:style="'display: none; max-width: 500px; overflow: auto; white-space: pre-line;'">
-										<img alt="Image" class="image" th:if="${article.image != null}"
-											 th:src="'data:image/png;base64, ' + ${article.image}" width="300px" />
-										<!--                <img alt="Default Image" class="profile-image" src="/img/default-picture.png"-->
-										<!--                     th:unless="${session.user.profilePicture != null}"/>-->
-										<h3 th:text="${article.title}"></h3>
-										<h4 th:text="${article.subtitle}"></h4>
-										<p th:utext="${article.content}"></p>
-									</div>
+							<div class="show-content">
+								<!-- Article content (initially hidden) -->
+								<div th:id="'content-' + ${article.id}" th:data-id="${article.id}"
+									 th:style="'display: none; overflow: auto; white-space: pre-line;'">
+									<img alt="Image" class="image" th:if="${article.image != null}"
+										 th:src="'data:image/png;base64, ' + ${article.image}" width="500px"/>
+									<h3 th:text="${article.title}" style="padding-top: 20px"></h3>
+									<h4 th:text="${article.subtitle}"></h4>
+									<p th:utext="${article.content}"></p>
 								</div>
 							</div>
 						</div>
@@ -170,6 +166,9 @@
 					</li>
 				</ul>
 			</div>
+			<div class="content-display-area" id="contentDisplayArea" style="display: none;">
+				<!-- Content will be moved here dynamically -->
+			</div>
 		</div>
 	</div>
 	<div class="row">
@@ -187,12 +186,35 @@
 </div>
 
 	<script>
-		function toggleContent(contentId) {
+		let currentContentId = null;
+
+		function showContent(contentId, articleId) {
 			let contentDiv = document.getElementById(contentId);
+			let displayArea = document.getElementById('contentDisplayArea');
+
+			// If there is content already shown, hide it
+			if (currentContentId && currentContentId !== contentId) {
+				let currentContentDiv = document.getElementById(currentContentId);
+				if (currentContentDiv) {
+					currentContentDiv.style.display = 'none';
+					let originalLocation = document.querySelector('[th\\:id="content-' + currentContentDiv.dataset.id + '"]');
+					if (originalLocation) {
+						originalLocation.appendChild(currentContentDiv); // Move back to its original place
+					}
+				}
+			}
+
+			// Toggle the new content
 			if (contentDiv.style.display === 'none') {
+				displayArea.innerHTML = ''; // Clear the display area
+				displayArea.appendChild(contentDiv); // Move the content to the display area
+				displayArea.style.display = 'block';
 				contentDiv.style.display = 'block';
+				currentContentId = contentId;
 			} else {
 				contentDiv.style.display = 'none';
+				displayArea.style.display = 'none';
+				currentContentId = null;
 			}
 		}
 
