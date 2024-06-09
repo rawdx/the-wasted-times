@@ -120,4 +120,14 @@ public class PasswordChangeController {
 			return "redirect:/profile";
 		}
 	}
+
+	@GetMapping("/change-password")
+	public String changePassword() {
+		return "redirect:/";
+	}
+
+	@GetMapping("/forgot-password")
+	public String forgotPassword() {
+		return "redirect:/";
+	}
 }

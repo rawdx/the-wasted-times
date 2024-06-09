@@ -75,4 +75,9 @@ public class VerificationController {
 			return "redirect:/profile";
 		}
 	}
+
+	@GetMapping("/verify")
+	public String verifyEmail() {
+		return "redirect:/";
+	}
 }
